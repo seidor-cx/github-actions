@@ -1,0 +1,23 @@
+name: Build Container Image CI
+
+jobs:
+  build:
+    runs-on: docker
+    container:
+      image: gcr.io/kaniko-project/executor:debug
+    args:
+      - ${{ inputs.build_revision }}
+      - ${{ inputs.verbose }}
+      - ${{ inputs.token }}
+      - ${{ inputs.container_name }}
+      - ${{ inputs.container_tag }}
+      - ${{ inputs.build_context }}
+    steps:
+      - uses: actions/checkout@v4.1.0
+      - name: Create secret credentials
+        run: |
+          mkdir -p /kaniko/.docker
+          echo "{\"auths\":{\"${{ secrets.CI_REGISTRY }}\":{\"auth\":\"$(printf "%s:%s" "${{ secrets.CI_REGISTRY_USER }}" "${{ secrets.CI_REGISTRY_PASSWORD }}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+      - name: build_image_and_publish
+        run: |
+          /kaniko/executor --skip-tls-verify --context "${{ inputs.build_context }}" --dockerfile "${{ inputs.build_context }}/Dockerfile" --no-push --destination "${CI_REGISTRY_IMAGE}:${{ }}"
