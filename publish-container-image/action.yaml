@@ -34,5 +34,7 @@ outputs:
   container_image_url:
     description: "URL to the container image's new location"
 runs:
-  using: 'docker'
   image: 'docker://gcr.io/kaniko-project/executor:debug'
+  using: 'docker'
+  main: 'entrypoint.sh'
+
