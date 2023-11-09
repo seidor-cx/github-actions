@@ -1,0 +1,27 @@
+name: Build and push Container Image on Github registry
+on:
+  workflow_call:
+
+jobs:
+  build_and_push:
+    steps:
+    - uses: actions/checkout@v4.1.1
+    - name: Set Tag Value
+      id: set_tag_value
+      run: |
+            export TAG=$(grep -i "version" Dockerfile |cut -d '"' -f2)
+            echo "TAG=$TAG" >> $GITHUB_OUTPUT
+    - name: Set Image Name Value
+      id: set_image_value
+      run: |
+            IMAGE=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f2)
+            echo "IMAGE=$IMAGE" >> $GITHUB_OUTPUT            
+    - name: Build Container
+      uses: aevea/action-kaniko@v0.10.0
+      with:
+        registry: ghcr.io
+        password: ${{ secrets.GITHUB_TOKEN }}
+        path: .
+        image: ${{ steps.set_image_value.outputs.IMAGE }}
+        tag: ${{ steps.set_tag_value.outputs.TAG }}
+        extra_args: --destination ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest
