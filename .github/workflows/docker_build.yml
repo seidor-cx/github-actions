@@ -6,6 +6,14 @@ on:
         type: string
         description: 'Extra arguments to pass to kaniko'
         required: false
+      IMAGE:
+        type: string
+        description: 'Image name to use'
+        required: false
+      TAG:
+        type: string
+        description: 'Tag to use'
+        required: false
 
 jobs:
   build:
