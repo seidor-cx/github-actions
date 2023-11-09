@@ -23,9 +23,8 @@ jobs:
     - name: Set Tag Value
       id: set_tag_value
       run: |
-            if [ -n "${{ github.event.inputs.TAG }}" ]; then
-              export TAG=${{ github.event.inputs.TAG }}
-            else
+            TAG=${{ github.event.inputs.TAG }}
+            if [ -n "${TAG}" ]; then
               export TAG=$(grep -i "version" Dockerfile |cut -d '=' -f2|cut -d '"' -f2)
             fi
             echo TAG=$TAG
@@ -33,9 +32,7 @@ jobs:
     - name: Set Image Name Value
       id: set_image_value
       run: |
-            if [ -n "${{ github.event.inputs.IMAGE }}" ]; then
-              export IMAGE=${{ github.event.inputs.IMAGE }}
-            fi
+            IMAGE=${{ github.event.inputs.IMAGE }}
             if [ -z "$IMAGE" ]; then
               IMAGE=$(grep -i "name" Dockerfile |cut -d '=' -f2|cut -d '"' -f2)
             fi
