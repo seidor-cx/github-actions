@@ -6,11 +6,11 @@ on:
         type: string
         description: 'Extra arguments to pass to kaniko'
         required: false
-      IMAGE:
+      IMAGE_IN:
         type: string
         description: 'Image name to use'
         required: false
-      TAG:
+      TAG_IN:
         type: string
         description: 'Tag to use'
         required: false
@@ -23,14 +23,22 @@ jobs:
     - name: Set Tag Value
       id: set_tag_value
       run: |
-            export TAG=$(grep -i "version" Dockerfile |cut -d '=' -f2)
+            if [ -n "${{ github.event.inputs.TAG_IN }}" ]; then
+              export TAG=${{ github.event.inputs.TAG_IN }}
+            else
+              export TAG=$(grep -i "version" Dockerfile |cut -d '=' -f2)
+            fi
             echo TAG=$TAG
             echo "TAG=$TAG" >> $GITHUB_OUTPUT
     - name: Set Image Name Value
       id: set_image_value
       run: |
-            IMAGE=$(grep -i "name" Dockerfile |cut -d '=' -f2)
+            if [ -n "${{ github.event.inputs.IMAGE_IN }}" ]; then
+              export IMAGE=${{ github.event.inputs.IMAGE_IN }}
+            fi
             if [ -z "$IMAGE" ]; then
+              IMAGE=$(grep -i "name" Dockerfile |cut -d '=' -f2)
+            else
               IMAGE=$(echo $GITHUB_REPOSITORY | cut -d '/' -f2)
             fi
             echo IMAGE=$IMAGE
