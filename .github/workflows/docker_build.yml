@@ -20,7 +20,10 @@ jobs:
     - name: Set Image Name Value
       id: set_image_value
       run: |
-            IMAGE=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f2)
+            IMAGE=$(grep -i "name" Dockerfile |cut -d '"' -f2)
+            if [ -z "$IMAGE" ]; then
+              IMAGE=$(echo $GITHUB_REPOSITORY | cut -d '/' -f2)
+            fi
             echo "IMAGE=$IMAGE" >> $GITHUB_OUTPUT
     - name: Build Container
       uses: aevea/action-kaniko@v0.10.0
