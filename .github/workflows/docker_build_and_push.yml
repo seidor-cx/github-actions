@@ -1,6 +1,11 @@
 name: Build and push Container Image on Github registry
 on:
   workflow_call:
+    inputs:
+      EXTRA_ARGS:
+        type: string
+        description: 'Extra arguments to pass to kaniko'
+        required: false
 
 jobs:
   build_and_push:
@@ -25,4 +30,4 @@ jobs:
         path: .
         image: ${{ steps.set_image_value.outputs.IMAGE }}
         tag: ${{ steps.set_tag_value.outputs.TAG }}
-        extra_args: --destination ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest
+        extra_args: ${{ github.event.inputs.EXTRA_ARGS }} --destination ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
