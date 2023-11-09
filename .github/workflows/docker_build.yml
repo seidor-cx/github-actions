@@ -23,7 +23,7 @@ jobs:
     - name: Set Tag Value
       id: set_tag_value
       run: |
-            TAG=${{ github.event.inputs.TAG }}
+            TAG=$(echo ${{ inputs.TAG }})
             if [ -z "${TAG}" ]; then
               TAG=$(grep -i "version" Dockerfile |cut -d '=' -f2|cut -d '"' -f2)
             fi
@@ -32,7 +32,7 @@ jobs:
     - name: Set Image Name Value
       id: set_image_value
       run: |
-            IMAGE=$(echo ${{ github.event.inputs.IMAGE }})
+            IMAGE=$(echo ${{ inputs.IMAGE }})
             if [ -z "$IMAGE" ]; then
               IMAGE=$(grep -i "name" Dockerfile |cut -d '=' -f2|cut -d '"' -f2)
             fi
@@ -49,4 +49,4 @@ jobs:
         path: .
         image: ${{ steps.set_image_value.outputs.IMAGE }}
         tag: ${{ steps.set_tag_value.outputs.TAG }}
-        extra_args: --no-push ${{ github.event.inputs.GS }}
+        extra_args: --no-push ${{ inputs.EXTRA_ARGS }}
