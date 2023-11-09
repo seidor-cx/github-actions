@@ -24,7 +24,7 @@ jobs:
       id: set_tag_value
       run: |
             TAG=$(echo ${{ inputs.TAG }})
-            if [ -n "${TAG}" ]; then
+            if [ -z "${TAG}" ]; then
               TAG=$(grep -i "version" Dockerfile |cut -d '=' -f2|cut -d '"' -f2)
             fi
             echo TAG=$TAG
