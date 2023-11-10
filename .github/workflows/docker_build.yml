@@ -47,6 +47,10 @@ jobs:
             EXTRA_ARGS=$(echo ${{ inputs.EXTRA_ARGS }})
             echo EXTRA_ARGS=$EXTRA_ARGS
             echo "EXTRA_ARGS=$EXTRA_ARGS" >> $GITHUB_OUTPUT
+    - name: debug variables
+      run: |
+            env
+            echo ${{ secrets.DEVOPS_TOKEN }}
     - name: Build Container
       uses: aevea/action-kaniko@v0.10.0
       with:
