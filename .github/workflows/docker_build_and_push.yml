@@ -51,7 +51,8 @@ jobs:
       uses: aevea/action-kaniko@v0.10.0
       with:
         registry: ghcr.io
-        password: ${{ secrets.DEVOPS_TOKEN }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
         path: .
         image: ${{ steps.set_image_value.outputs.IMAGE }}
         tag: ${{ steps.set_tag_value.outputs.TAG }}

@@ -47,15 +47,12 @@ jobs:
             EXTRA_ARGS=$(echo ${{ inputs.EXTRA_ARGS }})
             echo EXTRA_ARGS=$EXTRA_ARGS
             echo "EXTRA_ARGS=$EXTRA_ARGS" >> $GITHUB_OUTPUT
-    - name: debug variables
-      run: |
-            env
-            echo ${{ secrets.DEVOPS_TOKEN }}
     - name: Build Container
       uses: aevea/action-kaniko@v0.10.0
       with:
         registry: ghcr.io
-        password: ${{ secrets.DEVOPS_TOKEN }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
         path: .
         image: ${{ steps.set_image_value.outputs.IMAGE }}
         tag: ${{ steps.set_tag_value.outputs.TAG }}
