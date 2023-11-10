@@ -15,7 +15,9 @@ on:
         description: 'Tag to use'
         required: false
     secrets: 
-      inherit:
+      DEVOPS_TOKEN:
+        description: 'Github token'
+        required: true
 
 jobs:
   build:
