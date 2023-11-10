@@ -41,6 +41,8 @@ jobs:
             fi
             echo IMAGE=$IMAGE
             echo "IMAGE=$IMAGE" >> $GITHUB_OUTPUT
+    - name: Show extra args value
+      run: echo ${{ inputs.EXTRA_ARGS }}
     - name: Build Container
       uses: aevea/action-kaniko@v0.10.0
       with:
