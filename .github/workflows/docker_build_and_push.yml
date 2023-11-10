@@ -56,5 +56,3 @@ jobs:
         image: ${{ steps.set_image_value.outputs.IMAGE }}
         tag: ${{ steps.set_tag_value.outputs.TAG }}
         extra_args: ${{ steps.set_extra_args_value.outputs.EXTRA_ARGS }} --destination ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
-        cache: true
-        cache_registry: cache
