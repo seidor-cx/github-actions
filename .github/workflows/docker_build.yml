@@ -29,11 +29,6 @@ on:
         description: Enables trace for entrypoint.sh
         required: false
         default: "false"
-    outputs:
-      BUILD_LOG:
-        description: 'Build log'
-        value: ${{ steps.build.outputs.build_log }}
-
 
 jobs:
   build:
