@@ -29,6 +29,11 @@ on:
         description: Enables trace for entrypoint.sh
         required: false
         default: "false"
+    outputs:
+      BUILD_LOG:
+        description: 'Build log'
+        value: ${{ steps.build.outputs.build_log }}
+
 
 jobs:
   build:
@@ -63,6 +68,7 @@ jobs:
             echo EXTRA_ARGS=$EXTRA_ARGS
             echo "EXTRA_ARGS=$EXTRA_ARGS" >> $GITHUB_OUTPUT
     - name: Build Container
+      id: build-job
       uses: aevea/action-kaniko@v0.10.0
       with:
         registry: ghcr.io
@@ -72,5 +78,10 @@ jobs:
         build_file: ${{ inputs.DOCKERFILE }}
         image: ${{ steps.set_image_value.outputs.IMAGE }}
         tag: ${{ steps.set_tag_value.outputs.TAG }}
-        extra_args: --no-push ${{ steps.set_extra_args_value.outputs.EXTRA_ARGS }}
+        extra_args: --no-push ${{ steps.set_extra_args_value.outputs.EXTRA_ARGS }} >> /tmp/build-logs 2>&1
         debug: ${{ inputs.DEBUG }}
+    - name: Publish build logs
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-logs
+        path: /tmp/build-logs
