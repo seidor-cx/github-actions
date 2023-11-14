@@ -40,7 +40,7 @@ jobs:
       run: |
             TAG=$(echo ${{ inputs.TAG }})
             if [ -z "${TAG}" ]; then
-              TAG=$(grep -i "version" ${{ inputs.DOCKERFILE }} |cut -d '=' -f2|cut -d '"' -f2)
+              TAG=$(grep -i "version" ${{ inputs.CONTEXT }}/${{ inputs.DOCKERFILE }} |cut -d '=' -f2|cut -d '"' -f2)
             fi
             if [ -z "${TAG}" ]; then
               TAG=$(echo ${{ github.sha }})
@@ -52,7 +52,7 @@ jobs:
       run: |
             IMAGE=$(echo ${{ inputs.IMAGE }})
             if [ -z "$IMAGE" ]; then
-              IMAGE=$(grep -i "name" ${{ inputs.DOCKERFILE }} |cut -d '=' -f2|cut -d '"' -f2)
+              IMAGE=$(grep -i "name" ${{ inputs.CONTEXT }}/${{ inputs.DOCKERFILE }} |cut -d '=' -f2|cut -d '"' -f2)
             fi
             if [ -z "$IMAGE" ]; then
               IMAGE=$(echo $GITHUB_REPOSITORY | cut -d '/' -f2)
@@ -80,5 +80,5 @@ jobs:
         context: ${{ inputs.CONTEXT }}
         file: ${{ inputs.DOCKERFILE }}
         push: false
-        tags: ghcr.io/${{ github.repository }}:${{ steps.set_tag_value.outputs.TAG }}
+        tags: ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }}
         build-args: ${{ steps.set_extra_args_value.outputs.EXTRA_ARGS }}
