@@ -24,11 +24,6 @@ on:
         description: 'Dockerfile to use'
         required: false
         default: Dockerfile
-      DEBUG:
-        type: string
-        description: Enables trace for entrypoint.sh
-        required: false
-        default: "false"
 
 jobs:
   build:
