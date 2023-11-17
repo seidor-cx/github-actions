@@ -1,0 +1,43 @@
+name: 'Scann brnach on SonarQube'
+description: 'A simple GitHub Action for build and publish container images over Github Container Registry'
+author: 'Seidor'
+inputs:
+  SONAR_TOKEN:
+    description: 'Sonarqube token'
+    required: true
+  SONAR_URL:
+    description: 'URL for sonarqube'
+    required: true
+  BRANCH_NAME:
+    description: 'Merge request target branch name'
+    required: false
+  PR_IID:
+    description: 'Merge request ID'
+    required: false
+  PR_SOURCE_BRANCH_NAME:
+    description: 'Merge request source branch name'
+    required: false
+  PR_TARGET_BRANCH_NAME:
+    description: 'Merge request target branch name'
+    required: false
+  SONAR_EXTRA_PARAM:
+    description: 'Extra parameters for sonar-scanner'
+    required: false
+  SONAR_PROPERTIES_FILE:
+    description: 'Dockerfile to use'
+    required: false
+    default: project.properties
+  WORKDIR:
+    description: 'Working directory'
+    required: false
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - run: $GITHUB_ACTION_PATH/sonar_scanner.sh pull_request_iid=${{ inputs.PR_IID }} pull_request_source_branch_name=${{ inputs.PR_SOURCE_BRANCH }} pull_request_target_branch_name=${{ inputs.PR_TARGET_BRANCH }}
+      shell: bash
+      if: ${{ inputs.PR_IID != null }}
+    - run: $GITHUB_ACTION_PATH/sonar_scanner.sh branch_name=${{ inputs.BRANCH_NAME }}
+      shell: bash
+      if: ${{ inputs.PR_IID == null }}

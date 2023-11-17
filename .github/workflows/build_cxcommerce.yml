@@ -1,0 +1,57 @@
+name: Check source code
+on:
+  workflow_call:
+    inputs:
+      WORKDIR:
+        type: string
+        description: 'Working directory'
+        required: true
+        default: .
+      INITIALIZE:
+        type: boolean
+        description: 'Initialize SAP CXCommerce'
+        required: false
+        default: false
+      ENVIRONMENT:
+        type: string
+        description: 'Environment platform to build'
+        required: false
+        default: 'ci'
+    env:
+      PLATFORM_DIR: ${{ inputs.WORKDIR  }}/hybris/bin/platform
+      HYBRIS_HOME: ${{ inputs.WORKDIR  }}/hybris
+      PROJECT_DIR: ${{ inputs.WORKDIR  }}/custom-cx
+
+jobs:
+  build:
+    if: ${{ inputs.INITIALIZE == false }}
+    runs-on: 'k8s-ci'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Initialize SAP CXCommerce
+      id: initialize
+      run: |
+            cd ${{ inputs.WORKDIR }}
+            cd ${{ env.PLATFORM_DIR }}
+            source setantenv.sh
+            cd ${{ env.CUSTOM_DIR }}
+            ant ${{ inputs.ENVIRONMENT }}
+            cd ${PLATFORM_DIR}
+            ant clean all
+  initialize:
+    if: ${{ inputs.INITIALIZE == true }}
+    runs-on: 'k8s-ci'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Initialize SAP CXCommerce
+      id: initialize
+      run: |
+            cd ${{ inputs.WORKDIR }}
+            cd ${{ env.PLATFORM_DIR }}
+            source setantenv.sh
+            cd ${{ env.CUSTOM_DIR }}
+            ant ${{ inputs.ENVIRONMENT }}
+            cd ${PLATFORM_DIR}
+            ant clean initialize | awk -f ${CUSTOM_DIR}/external-resources/ci/scripts/parse_initialize_errors.awk
