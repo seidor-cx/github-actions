@@ -1,0 +1,13 @@
+name: 'Build Spartacus Storefront'
+description: 'A simple GitHub Action for build SAP Commerce Spartacus Storefront'
+author: 'Seidor'
+inputs:
+  WORKDIR:
+    description: 'Git repository path'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - run: $GITHUB_ACTION_PATH/build.sh workdir=${{ inputs.WORKDIR }}
+      shell: bash
