@@ -41,7 +41,7 @@ jobs:
     - name: Merge branches on github runner environment
       uses: seidor-cx/github-actions/runner_merge@main
       with:
-        SOURCE_BRANCH: ${{ inputs.WORKDIR }}
+        SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH }}
         TARGET_BRANCH: ${{ inputs.TARGET_BRANCH }}
     - name: Checkout
       uses: actions/checkout@v4.1.1
