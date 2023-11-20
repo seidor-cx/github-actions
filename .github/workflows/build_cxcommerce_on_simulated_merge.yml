@@ -1,0 +1,56 @@
+name: Scann SAP Commerce Pull Request
+on:
+  workflow_call:
+    inputs:
+      WORKDIR:
+        description: 'Working directory'
+        type: string
+        required: false
+      CUSTOM_MODULES:
+        description: 'Custom modules to scan'
+        type: string
+        required: false
+      SOURCE_BRANCH:
+        description: 'Source branch'
+        type: string
+        required: true
+      TARGET_BRANCH:
+        description: 'Target branch'
+        type: string
+        required: true
+      ENVIRONMENT:
+        description: 'Environment to scan'
+        type: string
+        required: false
+        default: 'ci'
+      INITIALIZE:
+        description: 'Initialize SAP Commerce'
+        type: string
+        required: false
+        default: '0'
+
+jobs:
+  build:
+    runs-on: 'k8s-ci'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
+      with:
+        ref: ${{ inputs.SOURCE_BRANCH }}
+        fetch-depth: 0
+    - name: Merge branches on github runner environment
+      uses: seidor-cx/github-actions/runner_merge@main
+      with:
+        SOURCE_BRANCH: ${{ inputs.WORKDIR }}
+        TARGET_BRANCH: ${{ inputs.TARGET_BRANCH }}
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
+      with:
+        ref: ${{ inputs.TARGET_BRANCH }}
+        fetch-depth: 0
+    - name: buils SAP Commerce
+      uses: seidor-cx/github-actions/build-cxcommerce@main
+      with:
+        INITIALIZE: ${{ inputs.INITIALIZE }}
+        CUSTOM_DIR: ${{ inputs.CUSTOM_MODULES }}
+        ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
