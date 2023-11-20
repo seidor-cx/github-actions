@@ -1,0 +1,62 @@
+name: Scann SAP Commerce Pull Request
+on:
+  workflow_call:
+    inputs:
+      SONAR_TOKEN:
+        description: 'Sonarqube token'
+        type: string
+        required: true
+      SONAR_URL:
+        description: 'URL for sonarqube'
+        type: string
+        required: true
+      SOURCE_BRANCH_NAME:
+        description: 'Merge request source branch name'
+        type: string
+        required: false
+      SONAR_PROPERTIES_FILE:
+        description: 'Dockerfile to use'
+        type: string
+        required: false
+      WORKDIR:
+        description: 'Working directory'
+        type: string
+        required: false
+      CUSTOM_MODULES:
+        description: 'Custom modules to scan'
+        type: string
+        required: false
+      ENVIRONMENT:
+        description: 'Environment to scan'
+        type: string
+        required: false
+        default: 'ci'
+
+jobs:
+  build:
+    runs-on: 'k8s-ci'
+    steps:
+    - uses: actions/checkout@v4.1.1
+    - name: buils SAP Commerce
+      uses: seidor-cx/github-actions/cxcommerce-build@main
+      with:
+        INITIALIZE: "0"
+        CUSTOM_DIR: ${{ inputs.CUSTOM_MODULES }}
+        ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+    - name: Exec Unit Test
+      uses: seidor-cx/github-actions/cxcommerce-junit@main
+      with:
+        CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES }}
+    - name: Publish Junit Test Results as Github artifact
+      uses: mikepenz/action-junit-report@v4
+      if: success() || failure() # always run even if the previous step fails
+      with:
+        report_paths: '**/build/test-results/test/TEST-*.xml'
+    - name: Exec Sonnar Scanner
+      uses: seidor-cx/github-actions/sonar-scanner@main
+      with:
+        SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
+        SONAR_URL: ${{ inputs.SONAR_URL }}
+        SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
+        WORKDIR: ${{ inputs.WORKDIR }}
+        BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}

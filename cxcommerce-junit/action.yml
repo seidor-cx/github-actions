@@ -1,0 +1,14 @@
+name: 'Execute Junit tests on SAP Commerce'
+description: 'A simple GitHub Action for execute unit tests on SAP Commerce'
+author: 'Seidor'
+inputs:
+  CUSTOM_MODULES_DIR:
+    description: 'Custom modules directory'
+    required: false
+    default: "core-customize/hybris/bin/custom"
+
+runs:
+  using: composite
+  steps:
+    - run: $GITHUB_ACTION_PATH/exec_tests.sh custom__modules_dir=${{ inputs.CUSTOM_MODULES_DIR }}
+      shell: bash
