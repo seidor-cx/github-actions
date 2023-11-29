@@ -57,9 +57,9 @@ jobs:
     - name: Set EXTRA_ARGS Value
       id: set_extra_args_value
       run: |
-            EXTRA_ARGS=$(echo ${{ inputs.EXTRA_ARGS }})
-            echo EXTRA_ARGS=$EXTRA_ARGS
-            echo "EXTRA_ARGS=$EXTRA_ARGS" >> $GITHUB_OUTPUT
+            extra_args=$(echo ${{ inputs.EXTRA_ARGS }})
+            echo EXTRA_ARGS=$extra_args
+            echo "EXTRA_ARGS=$extra_args" >> $GITHUB_OUTPUT
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     - name: Login to Docker Hub

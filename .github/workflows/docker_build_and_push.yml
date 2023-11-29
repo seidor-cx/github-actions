@@ -57,9 +57,9 @@ jobs:
     - name: Set EXTRA_ARGS Value
       id: set_extra_args_value
       run: |
-            EXTRA_ARGS=$(echo ${{ inputs.EXTRA_ARGS }})
-            echo EXTRA_ARGS=$EXTRA_ARGS
-            echo "EXTRA_ARGS=$EXTRA_ARGS" >> $GITHUB_OUTPUT
+            extra_args=$(echo ${{ inputs.EXTRA_ARGS }})
+            echo EXTRA_ARGS=$extra_args
+            echo "EXTRA_ARGS=$extra_args" >> $GITHUB_OUTPUT
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
