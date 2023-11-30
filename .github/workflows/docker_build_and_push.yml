@@ -54,12 +54,12 @@ jobs:
             fi
             echo IMAGE=$IMAGE
             echo "IMAGE=$IMAGE" >> $GITHUB_OUTPUT
-    - name: Set EXTRA_ARGS Value
-      id: set_extra_args_value
-      run: |
-            extra_args=$(echo ${{ inputs.EXTRA_ARGS }})
-            echo EXTRA_ARGS=$extra_args
-            echo "EXTRA_ARGS=$extra_args" >> $GITHUB_OUTPUT
+#    - name: Set EXTRA_ARGS Value
+#      id: set_extra_args_value
+#      run: |
+#            extra_args=$(echo ${{ inputs.EXTRA_ARGS }})
+#            echo EXTRA_ARGS=$extra_args
+#            echo "EXTRA_ARGS=$extra_args" >> $GITHUB_OUTPUT
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
@@ -88,4 +88,5 @@ jobs:
         tags: |
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }} 
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
-        build-args: ${{ steps.set_extra_args_value.outputs.EXTRA_ARGS }}
+        build-args: |
+                    ${{ inputs.EXTRA_ARGS }}
