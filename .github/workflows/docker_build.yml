@@ -60,9 +60,9 @@ jobs:
             build_args=${{ inputs.BUILD_ARGS }}
             for arg in $build_args; do
               if [[ $arg == $build_args[0] ]]; then
-                BUILD_ARGS=$(echo \"$arg\")
+                BUILD_ARGS="\"$arg\" "
               else
-                BUILD_ARGS="echo $BUILD_ARGS --build-arg \"$arg\""
+                BUILD_ARGS="$BUILD_ARGS --build-arg \"$arg\" "
               fi
             done
             echo "BUILD_ARGS=$BUILD_ARGS"
