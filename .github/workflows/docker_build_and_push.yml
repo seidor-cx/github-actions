@@ -92,4 +92,4 @@ jobs:
         tags: |
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }} 
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
-        build-args: ${{ steps.set_BUILD_ARGS_value.outputs.BUILD_ARGS }}
+        build-args: ${{ inputs.BUILD_ARGS }}
