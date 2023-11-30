@@ -57,11 +57,9 @@ jobs:
     - name: Set BUILD_ARGS Value
       id: set_BUILD_ARGS_value
       run: |
-            build_args_list="${{ inputs.BUILD_ARGS }}"
-            build_args="${build_args_list[0]}"
+            build_args=$(echo ${{ inputs.BUILD_ARGS }}|awk '{print $1}')
             echo "build_args $build_args"
-            echo "build_args=${build_args_list[0]}"
-            loop_list=$(echo $build_args_list|awk '{for(i=2;i<=NF;i++)print $i}')
+            loop_list=$(echo ${{ inputs.BUILD_ARGS }}|awk '{for(i=2;i<=NF;i++)print $i}')
             echo "loop_list: ${loop_list[@]}"
             for arg in ${loop_list[@]}
             do
