@@ -58,10 +58,9 @@ jobs:
       id: set_BUILD_ARGS_value
       run: |
             build_args=${{ inputs.BUILD_ARGS }}
+            BUILD_ARGS="$build_args[0]"
             for arg in $build_args; do
-              if [[ $arg == $build_args[0] ]]; then
-                BUILD_ARGS="\"$arg\" "
-              else
+              if [[ $arg != $build_args[0] ]]; then
                 BUILD_ARGS="$BUILD_ARGS --build-arg \"$arg\" "
               fi
             done
