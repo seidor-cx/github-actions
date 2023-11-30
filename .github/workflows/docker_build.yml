@@ -57,7 +57,7 @@ jobs:
     - name: Set BUILD_ARGS Value
       id: set_BUILD_ARGS_value
       run: |
-            build_args=$(echo ${{ inputs.BUILD_ARGS }})
+            build_args=${{ inputs.BUILD_ARGS }}
             for arg in $build_args; do
               if [[ $arg == $build_args[0] ]]; then
                 BUILD_ARGS=$(echo \"$arg\")
@@ -65,6 +65,7 @@ jobs:
                 BUILD_ARGS="echo $BUILD_ARGS --build-arg \"$arg\""
               fi
             done
+            echo "BUILD_ARGS=$BUILD_ARGS"
             echo "BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_OUTPUT
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -82,5 +83,4 @@ jobs:
         file: ${{ inputs.CONTEXT }}/${{ inputs.DOCKERFILE }}
         push: false
         tags: ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }}
-        build-args: |
-                    ${{ inputs.BUILD_ARGS }}
+        build-args: ${{ steps.set_BUILD_ARGS_value.outputs.BUILD_ARGS }}

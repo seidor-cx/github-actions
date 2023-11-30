@@ -65,6 +65,7 @@ jobs:
                 BUILD_ARGS="echo $BUILD_ARGS --build-arg \"$arg\""
               fi
             done
+            echo "BUILD_ARGS=$BUILD_ARGS"
             echo "BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_OUTPUT
     - name: Docker meta
       id: meta
@@ -73,7 +74,7 @@ jobs:
         # list of Docker images to use as base name for tags
         images: |
           name/app
-          ghcr.io/username/app            
+          ghcr.io/username/app
         # generate Docker tags based on the following events/attributes
         tags: ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }}
     - name: Set up Docker Buildx
@@ -94,5 +95,4 @@ jobs:
         tags: |
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }} 
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
-        build-args: |
-                    ${{ inputs.BUILD_ARGS }}
+        build-args: ${{ steps.set_BUILD_ARGS_value.outputs.BUILD_ARGS }}
