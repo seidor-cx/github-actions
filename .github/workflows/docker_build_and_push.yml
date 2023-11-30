@@ -59,7 +59,9 @@ jobs:
       run: |
             build_args=${{ inputs.BUILD_ARGS }}
             BUILD_ARGS="${build_args[0]}"
-            for arg in ${build_args[@]:1}; do
+            loop_list=$(echo build_args|awk '{for(i=2;i<=NF;i++)print $i}')
+            for arg in ${loop_list}
+            do
               BUILD_ARGS="$BUILD_ARGS --build-arg \"$arg\" "
             done
             echo "BUILD_ARGS=$BUILD_ARGS"
