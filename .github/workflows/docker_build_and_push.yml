@@ -61,7 +61,7 @@ jobs:
             build_args="${build_args_list[0]}"
             echo "build_args $build_args"
             echo "build_args=${build_args_list[0]}"
-            loop_list=$(echo build_args_list|awk '{for(i=2;i<=NF;i++)print $i}')
+            loop_list=$(echo $build_args_list|awk '{for(i=2;i<=NF;i++)print $i}')
             echo "loop_list: ${loop_list[@]}"
             for arg in ${loop_list[@]}
             do
