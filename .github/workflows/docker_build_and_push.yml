@@ -2,7 +2,7 @@ name: Build and push Container Image on Github registry
 on:
   workflow_call:
     inputs:
-      EXTRA_ARGS:
+      BUILD_ARGS:
         type: string
         description: 'Extra arguments to pass to kaniko'
         required: false
@@ -54,12 +54,18 @@ jobs:
             fi
             echo IMAGE=$IMAGE
             echo "IMAGE=$IMAGE" >> $GITHUB_OUTPUT
-#    - name: Set EXTRA_ARGS Value
-#      id: set_extra_args_value
-#      run: |
-#            extra_args=$(echo ${{ inputs.EXTRA_ARGS }})
-#            echo EXTRA_ARGS=$extra_args
-#            echo "EXTRA_ARGS=$extra_args" >> $GITHUB_OUTPUT
+    - name: Set BUILD_ARGS Value
+      id: set_BUILD_ARGS_value
+      run: |
+            build_args=$(echo ${{ inputs.BUILD_ARGS }})
+            for arg in $build_args; do
+              if [[ $arg == $build_args[0] ]]; then
+                BUILD_ARGS=$(echo \"$arg\"")
+              else
+                BUILD_ARGS="echo $BUILD_ARGS --build-arg \"$arg\""
+              fi
+            done
+            echo "BUILD_ARGS=$BUILD_ARGS" >> $GITHUB_OUTPUT
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
@@ -89,4 +95,4 @@ jobs:
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }} 
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
         build-args: |
-                    ${{ inputs.EXTRA_ARGS }}
+                    ${{ inputs.BUILD_ARGS }}
