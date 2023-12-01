@@ -101,5 +101,7 @@ jobs:
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }} 
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
         build-args: ${{ inputs.BUILD_ARGS }}
-        secrets: ${{ inputs.SECRETS_ENV }}
-        secret-files: ${{ inputs.SECRETS_FILE }}
+        secrets: |
+                  ${{ inputs.SECRETS_ENV }}
+        secret-files: |
+                      ${{ inputs.SECRETS_FILE }}
