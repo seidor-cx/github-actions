@@ -24,6 +24,12 @@ on:
         description: 'Dockerfile to use'
         required: false
         default: Dockerfile
+      SECRETS_ENV:
+        type: string
+        description: Secrets environment
+      SECRETS_FILE:
+        type: string
+        description: Secrets file
 
 jobs:
   build:
@@ -93,3 +99,5 @@ jobs:
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }} 
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
         build-args: ${{ inputs.BUILD_ARGS }}
+        secrets: ${{ inputs.SECRETS_ENV }}
+        secret-files: ${{ inputs.SECRETS_FILE }}
