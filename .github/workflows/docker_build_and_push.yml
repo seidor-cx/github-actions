@@ -27,9 +27,11 @@ on:
       SECRETS_ENV:
         type: string
         description: Secrets environment
+        required: false
       SECRETS_FILE:
         type: string
         description: Secrets file
+        required: false
 
 jobs:
   build:
