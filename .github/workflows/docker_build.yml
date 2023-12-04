@@ -27,6 +27,7 @@ on:
       SECRETS_ENV:
         type: string
         description: Secrets environment
+        default: 'ZpoygEGPwHXTM4iWjnKt9kKR7VYAJ6wF'
       SECRETS_FILE:
         type: string
         description: Secrets file
