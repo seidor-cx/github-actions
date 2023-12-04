@@ -27,7 +27,6 @@ on:
       SECRETS_ENV:
         type: string
         description: Secrets environment
-        default: github_token='ZpoygEGPwHXTM4iWjnKt9kKR7VYAJ6wF'
       SECRETS_FILE:
         type: string
         description: Secrets file
