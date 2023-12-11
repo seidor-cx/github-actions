@@ -35,9 +35,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: $GITHUB_ACTION_PATH/sonar_scanner.sh sonar_url=${{ inputs.SONAR_URL }} sonar_token=${{ inputs.SONAR_TOKEN }} sonar_properties=${{ inputs.SONAR_PROPERTIES_FILE }} pull_request_iid=${{ inputs.PR_IID }} pull_request_source_branch_name=${{ inputs.PR_SOURCE_BRANCH }} pull_request_target_branch_name=${{ inputs.PR_TARGET_BRANCH }} sonar_extra_param=${{ inputs.SONAR_EXTRA_PARAM }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/sonar_scanner.sh sonar_url=${{ inputs.SONAR_URL }} sonar_token=${{ inputs.SONAR_TOKEN }} sonar_properties=${{ inputs.SONAR_PROPERTIES_FILE }} pull_request_iid=${{ inputs.PR_IID }} pull_request_source_branch_name=${{ inputs.PR_SOURCE_BRANCH }} pull_request_target_branch_name=${{ inputs.PR_TARGET_BRANCH }} sonar_extra_param=${{ inputs.SONAR_EXTRA_PARAM }}
       shell: bash
       if: ${{ inputs.PR_IID != null }}
-    - run: $GITHUB_ACTION_PATH/sonar_scanner.sh sonar_url=${{ inputs.SONAR_URL }} sonar_token=${{ inputs.SONAR_TOKEN }} sonar_properties=${{ inputs.SONAR_PROPERTIES_FILE }} branch_name=${{ inputs.BRANCH_NAME }} sonar_extra_param=${{ inputs.SONAR_EXTRA_PARAM }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/sonar_scanner.sh sonar_url=${{ inputs.SONAR_URL }} sonar_token=${{ inputs.SONAR_TOKEN }} sonar_properties=${{ inputs.SONAR_PROPERTIES_FILE }} branch_name=${{ inputs.BRANCH_NAME }} sonar_extra_param=${{ inputs.SONAR_EXTRA_PARAM }}
       shell: bash
       if: ${{ inputs.PR_IID == null }}

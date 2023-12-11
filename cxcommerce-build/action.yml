@@ -18,5 +18,5 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: $GITHUB_ACTION_PATH/build.sh initialize=${{ inputs.INITIALIZE }} custom_dir=${{ inputs.CUSTOM_DIR }} environment=${{ inputs.ENVIRONMENT }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/build.sh initialize=${{ inputs.INITIALIZE }} custom_dir=${{ inputs.CUSTOM_DIR }} environment=${{ inputs.ENVIRONMENT }}
       shell: bash

@@ -9,5 +9,5 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: $GITHUB_ACTION_PATH/build.sh workdir=${{ inputs.WORKDIR }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/build.sh workdir=${{ inputs.WORKDIR }}
       shell: bash

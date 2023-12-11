@@ -10,5 +10,5 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: $GITHUB_ACTION_PATH/exec_tests.sh custom__modules_dir=${{ inputs.CUSTOM_MODULES_DIR }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/exec_tests.sh custom__modules_dir=${{ inputs.CUSTOM_MODULES_DIR }}
       shell: bash

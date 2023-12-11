@@ -12,5 +12,5 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: $GITHUB_ACTION_PATH/merge.sh source_branch_name=${{ inputs.SOURCE_BRANCH }} target_branch_name=${{ inputs.TARGET_BRANCH }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/merge.sh source_branch_name=${{ inputs.SOURCE_BRANCH }} target_branch_name=${{ inputs.TARGET_BRANCH }}
       shell: bash
