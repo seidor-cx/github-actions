@@ -2,6 +2,10 @@ name: Scann SAP Commerce Pull Request
 on:
   workflow_call:
     inputs:
+      DOCKER_IMAGE:
+        description: 'Docker image to use'
+        type: string
+        required: true
       SONAR_TOKEN:
         description: 'Sonarqube token'
         type: string
@@ -43,6 +47,18 @@ on:
 jobs:
   build:
     runs-on: 'k8s-ci'
+    container:
+      image: ${{ inputs.DOCKER_IMAGE }}
+      env:
+        SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
+        SONAR_URL: ${{ inputs.SONAR_URL }}
+        PR_IID: ${{ inputs.PR_IID }}
+        SOURCE_BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
+        TARGET_BRANCH_NAME: ${{ inputs.TARGET_BRANCH_NAME }}
+        SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
+        WORKDIR: ${{ inputs.WORKDIR }}
+        CUSTOM_MODULES: ${{ inputs.CUSTOM_MODULES }}
+        ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
     steps:
     - uses: actions/checkout@v4.1.1
     - name: buils SAP Commerce
