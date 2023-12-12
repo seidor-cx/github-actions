@@ -34,6 +34,7 @@ on:
         description: 'Working directory'
         type: string
         required: false
+        default: '/opt/cxcommerce/custom-cx'
       CUSTOM_MODULES:
         description: 'Custom modules to scan'
         type: string
@@ -62,13 +63,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
       with:
-        path: /opt/cxcommerce/custom-cx
+        path: custom-cx
     - name: Debug environmetn
       run: |
             echo $GITHUB_WORKSPACE
             pwd
             ls -la
             ls -la /opt/cxcommerce
+    - name: Copy Repo files to Container WORKDIR
+      run: |
+            cp -ra $GITHUB_WORKSPACE/custom-cx/. ${{ inputs.WORKDIR }}
     - name: build SAP Commerce
       uses: seidor-cx/github-actions/cxcommerce-build@main
       with:
