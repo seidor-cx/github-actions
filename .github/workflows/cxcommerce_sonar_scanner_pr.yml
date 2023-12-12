@@ -61,7 +61,12 @@ jobs:
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
     steps:
     - uses: actions/checkout@v4.1.1
-    - name: buils SAP Commerce
+    - name: Debug environmetn
+      run: |
+            echo $GITHUB_WORKSPACE
+            pwd
+            ls -la
+    - name: build SAP Commerce
       uses: seidor-cx/github-actions/cxcommerce-build@main
       with:
         INITIALIZE: "0"
