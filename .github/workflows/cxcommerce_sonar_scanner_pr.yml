@@ -73,12 +73,17 @@ jobs:
     - name: Copy Repo files to Container WORKDIR
       run: |
             cp -ra $GITHUB_WORKSPACE/custom-cx/. ${{ inputs.WORKDIR }}
+    - name: Debug Commerce dir
+      run: |
+            ls -la ${{ inputs.WORKDIR }}
+            ls -la /opt/cxcommerce
     - name: build SAP Commerce
       uses: seidor-cx/github-actions/cxcommerce-build@main
       with:
         INITIALIZE: "0"
         CUSTOM_DIR: ${{ inputs.CUSTOM_MODULES }}
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+        PROJECT_DIR: ${{ inputs.WORKDIR }}
     - name: Exec Unit Test
       uses: seidor-cx/github-actions/cxcommerce-junit@main
       with:

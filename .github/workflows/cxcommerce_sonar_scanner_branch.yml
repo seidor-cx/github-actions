@@ -2,6 +2,10 @@ name: Scann SAP Commerce Pull Request
 on:
   workflow_call:
     inputs:
+      DOCKER_IMAGE:
+        description: 'Docker image to use'
+        type: string
+        required: true
       SONAR_TOKEN:
         description: 'Sonarqube token'
         type: string
@@ -22,6 +26,7 @@ on:
         description: 'Working directory'
         type: string
         required: false
+        default: '/opt/cxcommerce/custom-cx'
       CUSTOM_MODULES:
         description: 'Custom modules to scan'
         type: string
@@ -35,6 +40,16 @@ on:
 jobs:
   build:
     runs-on: 'k8s-ci'
+    container:
+      image: ${{ inputs.DOCKER_IMAGE }}
+      env:
+        SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
+        SONAR_URL: ${{ inputs.SONAR_URL }}
+        SOURCE_BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
+        SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
+        WORKDIR: ${{ inputs.WORKDIR }}
+        CUSTOM_MODULES: ${{ inputs.CUSTOM_MODULES }}
+        ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
     steps:
     - uses: actions/checkout@v4.1.1
     - name: buils SAP Commerce
@@ -43,6 +58,7 @@ jobs:
         INITIALIZE: "0"
         CUSTOM_DIR: ${{ inputs.CUSTOM_MODULES }}
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+        PROJECT_DIR: ${{ inputs.WORKDIR }}
     - name: Exec Unit Test
       uses: seidor-cx/github-actions/cxcommerce-junit@main
       with:

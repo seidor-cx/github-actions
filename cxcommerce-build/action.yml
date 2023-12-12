@@ -10,6 +10,10 @@ inputs:
     description: 'Custom modules directory'
     required: false
     default: "core-customize/hybris/bin/custom"
+  PROJECT_DIR:
+    description: 'Project directory'
+    required: false
+    default: "/opt/cxcommerce/custom-cx"
   ENVIRONMENT:
     description: 'ANT environment target'
     required: false
@@ -18,5 +22,5 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: /bin/bash $GITHUB_ACTION_PATH/build.sh initialize=${{ inputs.INITIALIZE }} custom_dir=${{ inputs.CUSTOM_DIR }} environment=${{ inputs.ENVIRONMENT }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/build.sh initialize=${{ inputs.INITIALIZE }} custom_dir=${{ inputs.CUSTOM_DIR }} environment=${{ inputs.ENVIRONMENT }} project_dir=${{ inputs.PROJECT_DIR }}
       shell: bash

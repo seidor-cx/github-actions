@@ -2,7 +2,7 @@
 set -e
 ##This is a general variables file for the CI/CD pipeline
 PLATFORM_DIR=/opt/cxcommerce/hybris/bin/platform
-PROJECT_DIR=/opt/cxcommerce/custom-cx
+PROJECT_DIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^project_dir='|cut -d= -f2)
 INITIALIZE=$(echo $*|sed -s 's/ /\n/g'|grep -e '^initialize='|cut -d= -f2)
 CUSTOM_DIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^custom_dir='|cut -d= -f2)
 ENVIRONMENT=$(echo $*|sed -s 's/ /\n/g'|grep -e '^environment='|cut -d= -f2)
