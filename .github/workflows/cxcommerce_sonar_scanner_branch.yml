@@ -31,6 +31,7 @@ on:
         description: 'Custom modules to scan'
         type: string
         required: false
+        default: "core-customize/hybris/bin/custom"
       ENVIRONMENT:
         description: 'Environment to scan'
         type: string

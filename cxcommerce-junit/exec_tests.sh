@@ -6,10 +6,10 @@ CXCOMMERCE_HOME=/opt/cxcommerce
 PLATFORM_DIR=/opt/cxcommerce/hybris/bin/platform
 PROJECT_DIR=/opt/cxcommerce/custom-cx
 
-CUSTOM_MODULES_DIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^custom__modules_dir='|cut -d= -f2)
+CUSTOM_MODULES_DIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^custom_modules_dir='|cut -d= -f2)
 
 if [ -z "${CUSTOM_MODULES_DIR}" ] ; then
-    echo "Usage: ./exec_tests.sh custom__modules_dir=${{ inputs.CUSTOM_MODULES_DIR }}"
+    echo "Usage: ./exec_tests.sh custom_modules_dir=${{ inputs.CUSTOM_MODULES_DIR }}"
     exit 1
 fi
 
