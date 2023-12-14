@@ -8,7 +8,7 @@ SONAR_TOKEN=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_token='|cut -d= -f2)
 SONAR_URL=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_url='|cut -d= -f2)
 SONAR_PROPERTIES=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_properties='|cut -d= -f2)
 SONAR_EXTRA_PARAM=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_extra_param='|cut -d= -f2)
-CUSTOM_DIR=/opt/cxcommerce/custom-cx
+WORKDIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^work_dir='|cut -d= -f2)
 
 function help(){
     echo "No branch or merge request information found. Please check the CI/CD pipeline configuration."
@@ -38,5 +38,5 @@ else
     exit 1
 fi
 
-cd ${CUSTOM_DIR}
+cd ${WORKDIR}
 /opt/sonar-scanner/bin/sonar-scanner ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}
