@@ -105,7 +105,8 @@ jobs:
     - name: Exec Unit Test
       uses: seidor-cx/github-actions/cxcommerce-junit@main
       with:
-        CUSTOM_MODULES_DIR_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
+        CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
+        CUSTOM_DIR: ${{ inputs.WORKDIR }}
     - name: Publish Junit Test Results as Github artifact
       uses: mikepenz/action-junit-report@v4
       if: success() || failure() # always run even if the previous step fails

@@ -6,9 +6,13 @@ inputs:
     description: 'Custom modules directory'
     required: false
     default: "core-customize/hybris/bin/custom"
+  CUSTOM_DIR:
+    description: 'Project directory'
+    required: false
+    default: "/opt/cxcommerce/custom-cx"
 
 runs:
   using: composite
   steps:
-    - run: /bin/bash $GITHUB_ACTION_PATH/exec_tests.sh custom_modules_dir=${{ inputs.CUSTOM_MODULES_DIR }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/exec_tests.sh custom_modules_dir=${{ inputs.CUSTOM_MODULES_DIR }} custom_dir=${{ inputs.CUSTOM_DIR }}
       shell: bash
