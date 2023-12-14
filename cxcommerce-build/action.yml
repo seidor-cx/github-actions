@@ -7,10 +7,6 @@ inputs:
     required: false
     default: "0"
   CUSTOM_DIR:
-    description: 'Custom modules directory'
-    required: false
-    default: "core-customize/hybris/bin/custom"
-  PROJECT_DIR:
     description: 'Project directory'
     required: false
     default: "/opt/cxcommerce/custom-cx"

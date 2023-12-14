@@ -2,7 +2,6 @@
 set -e
 ##This is a general variables file for the CI/CD pipeline
 PLATFORM_DIR=/opt/cxcommerce/hybris/bin/platform
-PROJECT_DIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^project_dir='|cut -d= -f2)
 INITIALIZE=$(echo $*|sed -s 's/ /\n/g'|grep -e '^initialize='|cut -d= -f2)
 CUSTOM_DIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^custom_dir='|cut -d= -f2)
 ENVIRONMENT=$(echo $*|sed -s 's/ /\n/g'|grep -e '^environment='|cut -d= -f2)
@@ -14,7 +13,7 @@ fi
 
 cd ${PLATFORM_DIR}
 source setantenv.sh
-cd ${PROJECT_DIR}
+cd ${CUSTOM_DIR}
 ant ${ENVIRONMENT}
 cd ${PLATFORM_DIR}
 if [ ${INITIALIZE} -eq 0 ]; then
