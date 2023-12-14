@@ -35,10 +35,11 @@ on:
         type: string
         required: false
         default: '/opt/cxcommerce/custom-cx'
-      CUSTOM_MODULES:
+      CUSTOM_MODULES_DIR:
         description: 'Custom modules to scan'
         type: string
         required: false
+        default: "core-customize/hybris/bin/custom"
       ENVIRONMENT:
         description: 'Environment to scan'
         type: string
@@ -58,7 +59,7 @@ jobs:
         TARGET_BRANCH_NAME: ${{ inputs.TARGET_BRANCH_NAME }}
         SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
         WORKDIR: ${{ inputs.WORKDIR }}
-        CUSTOM_MODULES: ${{ inputs.CUSTOM_MODULES }}
+        CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
     steps:
     - uses: actions/checkout@v4.1.1
@@ -71,13 +72,12 @@ jobs:
       uses: seidor-cx/github-actions/cxcommerce-build@main
       with:
         INITIALIZE: "0"
-        CUSTOM_DIR: ${{ inputs.CUSTOM_MODULES }}
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
-        PROJECT_DIR: ${{ inputs.WORKDIR }}
+        CUSTOM_DIR: ${{ inputs.WORKDIR }}
     - name: Exec Unit Test
       uses: seidor-cx/github-actions/cxcommerce-junit@main
       with:
-        CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES }}
+        CUSTOM_MODULES_DIR_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
     - name: Publish Junit Test Results as Github artifact
       uses: mikepenz/action-junit-report@v4
       if: success() || failure() # always run even if the previous step fails
