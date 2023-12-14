@@ -45,6 +45,26 @@ on:
         type: string
         required: false
         default: 'ci'
+      MYSQL_ROOT_PASSWORD:
+        description: 'MYSQL_ROOT_PASSWORD'
+        type: string
+        required: false
+        default: 'admin'
+      MYSQL_DATABASE:
+        description: 'MYSQL_DATABASE'
+        type: string
+        required: false
+        default: 'commerce'
+      MYSQL_USER:
+        description: 'MYSQL_USER'
+        type: string
+        required: false
+        default: 'hybris'
+      MYSQL_PASSWORD:
+        description: 'MYSQL_PASSWORD'
+        type: string
+        required: false
+        default: 'hybris'
 
 jobs:
   build:
@@ -61,6 +81,14 @@ jobs:
         WORKDIR: ${{ inputs.WORKDIR }}
         CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ inputs.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ inputs.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ inputs.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ inputs.MYSQL_PASSWORD }}
     steps:
     - uses: actions/checkout@v4.1.1
       with:
