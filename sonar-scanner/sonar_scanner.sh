@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 CI_COMMIT_BRANCH=$(echo $*|sed -s 's/ /\n/g'|grep -e '^branch='|cut -d= -f2)
 CI_PULL_REQUEST_IID=$(echo $*|sed -s 's/ /\n/g'|grep -e '^pull_request_iid='|cut -d= -f2)
 CI_PULL_REQUEST_SOURCE_BRANCH_NAME=$(echo $*|sed -s 's/ /\n/g'|grep -e '^pull_request_source_branch_name='|cut -d= -f2)
