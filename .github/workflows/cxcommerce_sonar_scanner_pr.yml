@@ -111,7 +111,7 @@ jobs:
       uses: mikepenz/action-junit-report@v4
       if: success() || failure() # always run even if the previous step fails
       with:
-        report_paths: '**/build/test-results/test/TEST-*.xml'
+        report_paths: '/opt/cxcommerce/hybris/log/**/TEST-*.xml'
     - name: Exec Sonnar Scanner
       uses: seidor-cx/github-actions/sonar-scanner@main
       with:
