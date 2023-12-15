@@ -20,5 +20,3 @@ extensions_list=$(find ${CUSTOM_DIR}/${CUSTOM_MODULES_DIR}/* -mindepth 1 -maxdep
 ant jacocoalltests -Dtestclasses.extensions="$(echo $extensions_list|sed -s 's/ /,/g')"
 cd ${PLATFORM_DIR}
 ant jacocoreport
-cd ${CUSTOM_DIR}
-ls -la /opt/cxcommerce/hybris/log/junit
