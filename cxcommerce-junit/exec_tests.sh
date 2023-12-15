@@ -21,3 +21,4 @@ ant jacocoalltests -Dtestclasses.extensions="$(echo $extensions_list|sed -s 's/ 
 cd ${PLATFORM_DIR}
 ant jacocoreport
 cd ${CUSTOM_DIR}
+ls -la /opt/cxcommerce/hybris/log/junit

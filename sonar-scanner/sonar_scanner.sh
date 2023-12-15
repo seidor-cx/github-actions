@@ -39,4 +39,6 @@ else
 fi
 
 cd ${WORKDIR}
+pwd
+ls -la
 /opt/sonar-scanner/bin/sonar-scanner ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}
