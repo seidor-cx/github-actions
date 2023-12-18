@@ -15,11 +15,11 @@ on:
         type: string
         required: true
       SOURCE_BRANCH_NAME:
-        description: 'Merge request source branch name'
+        description: 'Source branch name'
         type: string
         required: false
       SONAR_PROPERTIES_FILE:
-        description: 'Dockerfile to use'
+        description: 'Sonar properties file'
         type: string
         required: false
       WORKDIR:
@@ -27,7 +27,7 @@ on:
         type: string
         required: false
         default: '/opt/cxcommerce/custom-cx'
-      CUSTOM_MODULES:
+      CUSTOM_MODULES_DIR:
         description: 'Custom modules to scan'
         type: string
         required: false
@@ -37,9 +37,29 @@ on:
         type: string
         required: false
         default: 'ci'
+      MYSQL_ROOT_PASSWORD:
+        description: 'MYSQL_ROOT_PASSWORD'
+        type: string
+        required: false
+        default: 'admin'
+      MYSQL_DATABASE:
+        description: 'MYSQL_DATABASE'
+        type: string
+        required: false
+        default: 'commerce'
+      MYSQL_USER:
+        description: 'MYSQL_USER'
+        type: string
+        required: false
+        default: 'hybris'
+      MYSQL_PASSWORD:
+        description: 'MYSQL_PASSWORD'
+        type: string
+        required: false
+        default: 'hybris'
 
 jobs:
-  build:
+  build_and_scan_branch:
     runs-on: 'k8s-ci'
     container:
       image: ${{ inputs.DOCKER_IMAGE }}
@@ -49,26 +69,39 @@ jobs:
         SOURCE_BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
         SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
         WORKDIR: ${{ inputs.WORKDIR }}
-        CUSTOM_MODULES: ${{ inputs.CUSTOM_MODULES }}
+        CUSTOM_MODULES: ${{ inputs.CUSTOM_MODULES_DIR }}
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ inputs.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ inputs.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ inputs.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ inputs.MYSQL_PASSWORD }}
     steps:
     - uses: actions/checkout@v4.1.1
-    - name: buils SAP Commerce
+      with:
+        path: custom-cx
+    - name: Copy Repo files to Container WORKDIR
+      run: |
+            cp -ra $GITHUB_WORKSPACE/custom-cx/. ${{ inputs.WORKDIR }}
+    - name: build SAP Commerce
       uses: seidor-cx/github-actions/cxcommerce-build@main
       with:
         INITIALIZE: "0"
-        CUSTOM_DIR: ${{ inputs.CUSTOM_MODULES }}
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
-        PROJECT_DIR: ${{ inputs.WORKDIR }}
+        CUSTOM_DIR: ${{ inputs.WORKDIR }}
     - name: Exec Unit Test
       uses: seidor-cx/github-actions/cxcommerce-junit@main
       with:
-        CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES }}
+        CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
+        CUSTOM_DIR: ${{ inputs.WORKDIR }}
     - name: Publish Junit Test Results as Github artifact
       uses: mikepenz/action-junit-report@v4
       if: success() || failure() # always run even if the previous step fails
       with:
-        report_paths: '**/build/test-results/test/TEST-*.xml'
+        report_paths: /opt/cxcommerce/hybris/log/junit/*.xml
     - name: Exec Sonnar Scanner
       uses: seidor-cx/github-actions/sonar-scanner@main
       with:
@@ -76,4 +109,4 @@ jobs:
         SONAR_URL: ${{ inputs.SONAR_URL }}
         SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
         WORKDIR: ${{ inputs.WORKDIR }}
-        BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
+        PR_SOURCE_BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}

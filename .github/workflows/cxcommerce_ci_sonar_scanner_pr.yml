@@ -27,7 +27,7 @@ on:
         type: string
         required: false
       SONAR_PROPERTIES_FILE:
-        description: 'Dockerfile to use'
+        description: 'Sonarqube properties file'
         type: string
         required: false
       WORKDIR:
@@ -67,7 +67,7 @@ on:
         default: 'hybris'
 
 jobs:
-  build:
+  build_and_scann_pull_request:
     runs-on: 'k8s-ci'
     container:
       image: ${{ inputs.DOCKER_IMAGE }}

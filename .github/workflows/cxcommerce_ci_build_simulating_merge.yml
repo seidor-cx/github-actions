@@ -2,55 +2,101 @@ name: Scann SAP Commerce Pull Request
 on:
   workflow_call:
     inputs:
-      WORKDIR:
-        description: 'Working directory'
-        type: string
-        required: false
-      CUSTOM_MODULES:
-        description: 'Custom modules to scan'
-        type: string
-        required: false
-      SOURCE_BRANCH:
-        description: 'Source branch'
+      DOCKER_IMAGE:
+        description: 'Docker image to use'
         type: string
         required: true
-      TARGET_BRANCH:
-        description: 'Target branch'
-        type: string
-        required: true
-      ENVIRONMENT:
-        description: 'Environment to scan'
+      SOURCE_BRANCH_NAME:
+        description: 'Merge request source branch name'
         type: string
         required: false
-        default: 'ci'
+      TARGET_BRANCH_NAME:
+        description: 'Merge request target branch name'
+        type: string
+        required: false
       INITIALIZE:
         description: 'Initialize SAP Commerce'
         type: string
         required: false
         default: '0'
+      WORKDIR:
+        description: 'Working directory'
+        type: string
+        required: false
+        default: '/opt/cxcommerce/custom-cx'
+      CUSTOM_MODULES_DIR:
+        description: 'Custom modules to scan'
+        type: string
+        required: false
+        default: "core-customize/hybris/bin/custom"
+      ENVIRONMENT:
+        description: 'Environment to scan'
+        type: string
+        required: false
+        default: 'ci'
+      MYSQL_ROOT_PASSWORD:
+        description: 'MYSQL_ROOT_PASSWORD'
+        type: string
+        required: false
+        default: 'admin'
+      MYSQL_DATABASE:
+        description: 'MYSQL_DATABASE'
+        type: string
+        required: false
+        default: 'commerce'
+      MYSQL_USER:
+        description: 'MYSQL_USER'
+        type: string
+        required: false
+        default: 'hybris'
+      MYSQL_PASSWORD:
+        description: 'MYSQL_PASSWORD'
+        type: string
+        required: false
+        default: 'hybris'
 
 jobs:
-  build:
+  simulate_merge_branches:
     runs-on: 'k8s-ci'
+    container:
+      image: ${{ inputs.DOCKER_IMAGE }}
+      env:
+        SOURCE_BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
+        TARGET_BRANCH_NAME: ${{ inputs.TARGET_BRANCH_NAME }}
+        WORKDIR: ${{ inputs.WORKDIR }}
+        CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
+        ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ inputs.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ inputs.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ inputs.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ inputs.MYSQL_PASSWORD }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.1
       with:
-        ref: ${{ inputs.SOURCE_BRANCH }}
+        ref: ${{ inputs.SOURCE_BRANCH_NAME }}
         fetch-depth: 0
     - name: Merge branches on github runner environment
       uses: seidor-cx/github-actions/runner_merge@main
       with:
-        SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH }}
-        TARGET_BRANCH: ${{ inputs.TARGET_BRANCH }}
-    - name: Checkout
-      uses: actions/checkout@v4.1.1
-      with:
-        ref: ${{ inputs.TARGET_BRANCH }}
-        fetch-depth: 0
-    - name: buils SAP Commerce
+        SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH_NAME }}
+        TARGET_BRANCH: ${{ inputs.TARGET_BRANCH_NAME }}
+    - name: Check if merge was successful
+      run: |
+        if [ -z "$GITHUB_REF" ]; then
+          echo "Merge failed"
+          exit 1
+        fi
+    - name: Copy Repo files to Container WORKDIR
+      run: |
+            cp -ra $GITHUB_WORKSPACE/custom-cx/. ${{ inputs.WORKDIR }}
+    - name: build SAP Commerce
       uses: seidor-cx/github-actions/cxcommerce-build@main
       with:
         INITIALIZE: ${{ inputs.INITIALIZE }}
-        CUSTOM_DIR: ${{ inputs.CUSTOM_MODULES }}
         ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+        CUSTOM_DIR: ${{ inputs.WORKDIR }}
