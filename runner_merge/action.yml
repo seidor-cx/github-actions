@@ -1,4 +1,4 @@
-name: 'Runner Merge'
+name: 'Merge Branches'
 description: 'A simple GitHub Action for merge two branches insise the github runner environment'
 author: 'Seidor'
 inputs:
