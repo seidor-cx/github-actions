@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 source_repo=$(echo $*|sed -s 's/ /\n/g'|grep -e '^source_repo='|cut -d= -f2)
 target_repo=$(echo $*|sed -s 's/ /\n/g'|grep -e '^target_repo='|cut -d= -f2)
 lfs_enabled=$(echo $*|sed -s 's/ /\n/g'|grep -e '^lfs_enabled='|cut -d= -f2)
@@ -13,16 +13,17 @@ fi
 if [ -z "${lfs_enabled}" ] ; then
     lfs_enabled=0
 fi
-echo "Cloning ${source_repo} to ${repo_dir}"
+echo "Cloning ${source_repo} to ${repo_dir}..."
 git clone --bare ${source_repo}
+echo "Move to ${repo_dir}..."
 cd ${repo_dir}
-ls -la ~/.ssh
-cat ~/.ssh/*
 if [ ${lfs_enabled} -eq 1 ]; then
+    echo "Download lfs files..."
     git lfs fetch --all
 fi
-
+echo "Push changes to ${target_repo}..."
 git push --mirror ${target_repo}
 if [ ${lfs_enabled} -eq 1 ]; then
     git lfs push --all ${target_repo}
+    echo "Push lfs files ..."
 fi
