@@ -1,0 +1,20 @@
+name: 'Mirror from Github to other Git repository'
+description: 'A simple GitHub Action for mirror from Github to other Git repository'
+author: 'Seidor'
+inputs:  
+  source_repo:
+    description: 'Source repository'
+    required: true
+  target_repo:
+    description: 'Target repository'
+    required: true
+  lfs_enabled:
+    description: 'Enable LFS sincronization'
+    required: false
+    default: "0"
+
+runs:
+  using: composite
+  steps:
+    - run: /bin/bash $GITHUB_ACTION_PATH/mirroring.sh workdir=${{ inputs.WORKDIR }}
+      shell: bash
