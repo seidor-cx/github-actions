@@ -5,10 +5,9 @@ target_repo=$(echo $*|sed -s 's/ /\n/g'|grep -e '^target_repo='|cut -d= -f2)
 lfs_enabled=$(echo $*|sed -s 's/ /\n/g'|grep -e '^lfs_enabled='|cut -d= -f2)
 old_path=$(echo ${source_repo}|awk -F '/' '{print $NF}'|cut -d '.' -f1)
 env
-ls -la 
 ls -la $HOME
 ls -la $HOME/.ssh
-if [ -z "${source_repo}" ] || [ -z "${target_repo}"] ; then
+if [ -z "${source_repo}" ] || [ -z "${target_repo}" ] ; then
     echo "Usage: ./mirroring.sh [lfs_enabled=1] source_repo=git@github.com/seidor-cx/repo.git target_repo=git@gitlab.com:group/repo.git"
     echo "lfs_enabled is optional, default is 0"
     exit 1
@@ -18,6 +17,7 @@ if [ -z "${lfs_enabled}" ] ; then
 fi
 
 git clone --bare ${source_repo}
+ls -la 
 cd ${old_path}
 if [ ${lfs_enabled} -eq 1 ]; then
     git lfs fetch --all
