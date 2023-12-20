@@ -16,5 +16,5 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: /bin/bash $GITHUB_ACTION_PATH/mirroring.sh workdir=${{ inputs.WORKDIR }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/mirroring.sh lfs_enabled=${{ inputs.lfs_enabled }} source_repo=${{ inputs.source_repo }} target_repo=${{ inputs.target_repo }}
       shell: bash
