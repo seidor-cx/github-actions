@@ -16,6 +16,8 @@ fi
 echo "Cloning ${source_repo} to ${repo_dir}"
 git clone --bare ${source_repo}
 cd ${repo_dir}
+ls -la ~/.ssh
+cat ~/.ssh/*
 if [ ${lfs_enabled} -eq 1 ]; then
     git lfs fetch --all
 fi
