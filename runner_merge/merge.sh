@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 # Usage:
 # ./merge.sh src=<SOURCE_BRANCH> dest=<dest_branch>
 SOURCE_BRANCH=$(echo $*|sed -s 's/ /\n/g'|grep -e '^source_branch_name='|cut -d= -f2)
