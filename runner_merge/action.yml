@@ -8,9 +8,13 @@ inputs:
   TARGET_BRANCH:
     description: 'Target branch name'
     required: true
+  WORKDIR:
+    description: 'Working directory'
+    required: false
+    default: '.'
 
 runs:
   using: composite
   steps:
-    - run: /bin/bash $GITHUB_ACTION_PATH/merge.sh source_branch_name=${{ inputs.SOURCE_BRANCH }} target_branch_name=${{ inputs.TARGET_BRANCH }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/merge.sh source_branch_name=${{ inputs.SOURCE_BRANCH }} target_branch_name=${{ inputs.TARGET_BRANCH }} workdir=${{ inputs.WORKDIR }}
       shell: bash
