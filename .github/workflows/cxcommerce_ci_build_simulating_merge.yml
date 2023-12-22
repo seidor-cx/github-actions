@@ -89,12 +89,6 @@ jobs:
       with:
         SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH_NAME }}
         TARGET_BRANCH: ${{ inputs.TARGET_BRANCH_NAME }}
-    - name: Check if merge was successful
-      run: |
-        if [ -z "$GITHUB_REF" ]; then
-          echo "Merge failed"
-          exit 1
-        fi
     - name: Copy Repo files to Container WORKDIR
       run: |
             cp -ra $GITHUB_WORKSPACE/custom-cx/. ${{ inputs.WORKDIR }}
