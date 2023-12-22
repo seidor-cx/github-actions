@@ -80,6 +80,7 @@ jobs:
       with:
         ref: ${{ inputs.SOURCE_BRANCH_NAME }}
         fetch-depth: 0
+        path: custom-cx
     - name: configure git
       run: |
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
