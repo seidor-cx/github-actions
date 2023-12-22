@@ -80,6 +80,10 @@ jobs:
       with:
         ref: ${{ inputs.SOURCE_BRANCH_NAME }}
         fetch-depth: 0
+    - name: configure git
+      run: |
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --global user.name "${{ github.actor }}"
     - name: Merge branches on github runner environment
       uses: seidor-cx/github-actions/runner_merge@main
       with:
