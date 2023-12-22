@@ -57,11 +57,6 @@ jobs:
         CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
     steps:
     - uses: actions/checkout@v4.1.1
-      with:
-        path: custom-cx
-    - name: Copy Repo files to Container WORKDIR
-      run: |
-            cp -ra $GITHUB_WORKSPACE/custom-cx/. ${{ inputs.WORKDIR }}
     - name: Build SAP Spartacus
       uses: seidor-cx/github-actions/spartacus-build@main
       with:
