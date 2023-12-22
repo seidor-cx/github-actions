@@ -8,7 +8,8 @@ if [ -z "${SOURCE_BRANCH}" ] || [ -z "${TARGET_BRANCH}" ]; then
     echo "Usage: ./merge.sh source_branch_name=<SOURCE_BRANCH> target_branch_name=<dest_branch>"
     exit 1
 fi
-
+pwd
+ls
 git fetch --all
 git checkout ${TARGET_BRANCH}
 git pull
