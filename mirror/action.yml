@@ -1,4 +1,4 @@
-name: 'Mirror from Github to other Git repository'
+name: 'Mirror from Github'
 description: 'A simple GitHub Action for mirror from Github to other Git repository'
 author: 'Seidor'
 inputs:  

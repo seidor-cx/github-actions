@@ -1,4 +1,4 @@
-name: 'Execute Junit tests on SAP Commerce'
+name: 'Junit SAP Commerce'
 description: 'A simple GitHub Action for execute unit tests on SAP Commerce'
 author: 'Seidor'
 inputs:

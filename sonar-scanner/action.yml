@@ -1,4 +1,4 @@
-name: 'Scann brnach on SonarQube'
+name: 'SonarQube scanner'
 description: 'A simple GitHub Action for build and publish container images over Github Container Registry'
 author: 'Seidor'
 inputs:

@@ -1,4 +1,4 @@
-name: 'Build Spartacus Storefront'
+name: 'Build Spartacus'
 description: 'A simple GitHub Action for build SAP Commerce Spartacus Storefront'
 author: 'Seidor'
 inputs:

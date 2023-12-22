@@ -1,4 +1,4 @@
-name: Scann SAP Commerce Pull Request
+name: Build Spartacus
 on:
   workflow_call:
     inputs:

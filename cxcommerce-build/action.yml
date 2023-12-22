@@ -1,5 +1,5 @@
-name: 'Scann brnach on SonarQube'
-description: 'A simple GitHub Action for build and publish container images over Github Container Registry'
+name: 'Build SAP Commerce'
+description: 'A simple GitHub to build SAP Commerce'
 author: 'Seidor'
 inputs:
   INITIALIZE:

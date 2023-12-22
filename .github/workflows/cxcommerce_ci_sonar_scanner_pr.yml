@@ -1,4 +1,4 @@
-name: Scann SAP Commerce Pull Request
+name: PR Scann Code SAP Commerce  ob PR
 on:
   workflow_call:
     inputs:

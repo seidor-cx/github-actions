@@ -1,4 +1,4 @@
-name: Configure Github Write Credentials
+name: Add Git W Credentials
 description: Configure Action with Github Write Credentials on repository
 author: "seidor"
 inputs:

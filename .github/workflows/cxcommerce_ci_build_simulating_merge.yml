@@ -1,4 +1,4 @@
-name: Scann SAP Commerce Pull Request
+name: Scann code SAP Commerce on pre merge
 on:
   workflow_call:
     inputs:
