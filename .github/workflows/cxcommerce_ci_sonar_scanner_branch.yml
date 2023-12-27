@@ -109,4 +109,4 @@ jobs:
         SONAR_URL: ${{ inputs.SONAR_URL }}
         SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
         WORKDIR: ${{ inputs.WORKDIR }}
-        PR_SOURCE_BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
+        BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
