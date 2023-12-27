@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-CI_COMMIT_BRANCH=$(echo $*|sed -s 's/ /\n/g'|grep -e '^branch='|cut -d= -f2)
+CI_COMMIT_BRANCH=$(echo $*|sed -s 's/ /\n/g'|grep -e '^branch_name='|cut -d= -f2)
 CI_PULL_REQUEST_IID=$(echo $*|sed -s 's/ /\n/g'|grep -e '^pull_request_iid='|cut -d= -f2)
 CI_PULL_REQUEST_SOURCE_BRANCH_NAME=$(echo $*|sed -s 's/ /\n/g'|grep -e '^pull_request_source_branch_name='|cut -d= -f2)
 CI_PULL_REQUEST_TARGET_BRANCH_NAME=$(echo $*|sed -s 's/ /\n/g'|grep -e '^pull_request_target_branch_name='|cut -d= -f2)
@@ -13,7 +13,7 @@ WORKDIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^work_dir='|cut -d= -f2)
 function help(){
     echo "No branch or merge request information found. Please check the CI/CD pipeline configuration."
     echo "Usage:"
-    echo "# sonar_scanner.sh branch=<branch_name>"
+    echo "# sonar_scanner.sh branch_name=<branch_name>"
     echo "Usage: sonar_scanner.sh pull_request_iid=<pull_request_iid> pull_request_source_branch_name=<pull_request_source_branch_name> pull_request_target_branch_name=<pull_request_target_branch_name>"
     echo "Example: sonar_scanner.sh branch=release/develop"
     echo "Example: sonar_scanner.sh pull_request_iid=1 pull_request_source_branch_name=feature/feature1 pull_request_target_branch_name=release/develop"
