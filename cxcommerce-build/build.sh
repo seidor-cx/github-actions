@@ -12,13 +12,20 @@ if [ -z "${INITIALIZE}" ] ; then
     exit 1
 fi
 
+echo "Move to platform directory ${PLATFORM_DIR}"
 cd ${PLATFORM_DIR}
+echo "Load ant environment variables"
 source setantenv.sh
+echo "Move to custom directory ${CUSTOM_DIR}"
 cd ${CUSTOM_DIR}
+echo "Set environment configuration"
 ant ${ENVIRONMENT}
+echo "Move to platform directory ${PLATFORM_DIR}"
 cd ${PLATFORM_DIR}
 if [ ${INITIALIZE} -eq 0 ]; then
+    echo "Build Commerce"
     ant clean all
 else
+    echo "Build & Initialize Commerce"
     ant clean initialize | awk -f $AWK_PARSER
 fi

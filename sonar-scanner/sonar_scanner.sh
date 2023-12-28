@@ -38,5 +38,7 @@ else
     exit 1
 fi
 
+echo "Move to ${WORKDIR}"
 cd ${WORKDIR}
+echo "Run sonar-scanner with params: ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}"
 /opt/sonar-scanner/bin/sonar-scanner ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}

@@ -11,10 +11,14 @@ if [ -z "${ACTOR_NAME}" ] || [ -z "${ACTOR_MAIL}" ] || [ -z "${SECRET}" ] || [ -
     exit 1
 fi
 
+echo "Create ssh config file"
 mkdir -p $HOME/.ssh
 echo "${CONFIG}" >> $HOME/.ssh/config
+echo "Create ssh secret file"
 secret_file="$(echo ${SECRET}|grep IdentityFile|awk '{print $NF}')"
 echo "${SECRET}" > ${secret_file}
+echo "Set permissions to ssh secret file"
 chmod 600 ${secret_file}
+echo "Set git credentials"
 git config --global user.email "${ACTOR_MAIL}"
 git config --global user.name "${ACTOR_NAME}"

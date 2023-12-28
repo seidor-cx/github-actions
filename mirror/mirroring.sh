@@ -24,6 +24,6 @@ fi
 echo "Push changes to ${target_repo}..."
 git push --mirror ${target_repo}
 if [ ${lfs_enabled} -eq 1 ]; then
-    git lfs push --all ${target_repo}
     echo "Push lfs files ..."
+    git lfs push --all ${target_repo}
 fi

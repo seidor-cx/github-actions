@@ -13,10 +13,16 @@ if [ -z "${CUSTOM_MODULES_DIR}" ] ; then
     exit 1
 fi
 
+echo "Move to platform directory ${PLATFORM_DIR}"
 cd ${PLATFORM_DIR}
+echo "Load ant environment variables"
 source setantenv.sh
+echo "Initialize tenant Junit"
 ant initialize -Dtenant=junit
+echo "Load extensions list"
 extensions_list=$(find ${CUSTOM_DIR}/${CUSTOM_MODULES_DIR}/* -mindepth 1 -maxdepth 1 -type d ! -regex '.*cicd.*' ! -regex '.*sampledata.*' ! -regex '.*external.*' -exec basename {} \;)
+echo "Extensions list: ${extensions_list}"
+echo "Run tests"
 ant jacocoalltests -Dtestclasses.extensions="$(echo $extensions_list|sed -s 's/ /,/g')"
-cd ${PLATFORM_DIR}
+echo "Generate Jacoco report"
 ant jacocoreport

@@ -11,10 +11,17 @@ if [ -z "${SOURCE_BRANCH}" ] || [ -z "${TARGET_BRANCH}" ]; then
     exit 1
 fi
 
+echo "Move to ${WORKDIR}"
 cd ${WORKDIR}
+echo "Upgrade change index"
 git fetch --all
+echo "Change to ${TARGET_BRANCH}"
 git checkout ${TARGET_BRANCH}
+echo "Pull changes from ${TARGET_BRANCH}"
 git pull
+echo "Change to ${SOURCE_BRANCH}"
 git checkout ${SOURCE_BRANCH}
+echo "Pull changes from ${SOURCE_BRANCH}"
 git pull
+echo "Merge ${SOURCE_BRANCH} into ${TARGET_BRANCH}"
 git merge ${TARGET_BRANCH}
