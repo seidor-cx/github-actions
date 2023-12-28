@@ -1,0 +1,53 @@
+name: Scan Spartacus on branch
+on:
+  workflow_call:
+    inputs:
+      DOCKER_IMAGE:
+        description: 'Docker image to use'
+        type: string
+        required: true
+      SONAR_TOKEN:
+        description: 'Sonarqube token'
+        type: string
+        required: true
+      SONAR_URL:
+        description: 'URL for sonarqube'
+        type: string
+        required: true
+      SOURCE_BRANCH_NAME:
+        description: 'Merge request source branch name'
+        type: string
+        required: false
+      SONAR_PROPERTIES_FILE:
+        description: 'Sonarqube properties file'
+        type: string
+        required: false
+      WORKDIR:
+        description: 'Working directory'
+        type: string
+        required: false
+        default: '/opt/cxcommerce/custom-cx'
+      CUSTOM_MODULES_DIR:
+        description: 'Custom modules to scan'
+        type: string
+        required: false
+        default: "js-storefront"
+
+jobs:
+  build_and_scann_pull_request:
+    runs-on: 'k8s-ci'
+    container:
+      image: ${{ inputs.DOCKER_IMAGE }}
+      env:
+        SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
+        SONAR_URL: ${{ inputs.SONAR_URL }}
+        SOURCE_BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
+        SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
+        WORKDIR: ${{ inputs.WORKDIR }}
+        CUSTOM_MODULES_DIR: ${{ inputs.CUSTOM_MODULES_DIR }}
+    steps:
+    - uses: actions/checkout@v4.1.1
+    - name: Build SAP Spartacus
+      uses: seidor-cx/github-actions/spartacus-build@main
+      with:
+        WORKDIR: ${{ inputs.WORKDIR }}
