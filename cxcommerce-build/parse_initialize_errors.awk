@@ -7,7 +7,7 @@ BEGIN{
     if( $0 ~ "31mERROR" )
     {
         error_msg=error_msg"\n"$0;
-	error_count++
+        error_count++
     };
     print $0
 }

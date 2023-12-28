@@ -26,3 +26,4 @@ echo "Run tests"
 ant jacocoalltests -Dtestclasses.extensions="$(echo $extensions_list|sed -s 's/ /,/g')"
 echo "Generate Jacoco report"
 ant jacocoreport
+echo "End of tests"
