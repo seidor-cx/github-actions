@@ -9,6 +9,7 @@ SONAR_URL=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_url='|cut -d= -f2)
 SONAR_PROPERTIES=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_properties='|cut -d= -f2)
 SONAR_EXTRA_PARAM=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_extra_param='|cut -d= -f2)
 WORKDIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^work_dir='|cut -d= -f2)
+SONAR_BIN="$GITHUB_ACTION_PATH/sonar-scanner/bin/sonar-scanner"
 
 function help(){
     echo "No branch or merge request information found. Please check the CI/CD pipeline configuration."
@@ -41,4 +42,4 @@ fi
 echo "Move to ${WORKDIR}"
 cd ${WORKDIR}
 echo "Run sonar-scanner with params: ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}"
-/opt/sonar-scanner/bin/sonar-scanner ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}
+$SONAR_BIN ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}
