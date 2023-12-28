@@ -20,7 +20,7 @@ source setantenv.sh
 echo "Initialize tenant Junit"
 ant initialize -Dtenant=junit
 echo "Load extensions list"
-extensions_list=$(find ${CUSTOM_DIR}/${CUSTOM_MODULES_DIR}/* -mindepth 1 -maxdepth 1 -type d ! -regex '.*cicd.*' ! -regex '.*sampledata.*' ! -regex '.*external.*' -exec basename {} \;)
+extensions_list=$(find ${CUSTOM_DIR}/${CUSTOM_MODULES_DIR}/* -mindepth 1 -maxdepth 1 -type d ! -regex '.*cicd.*' ! -regex '.*sampledata.*' ! -regex '.*external.*' ! -regex '.*mirakl.*' -exec basename {} \;)
 echo "Extensions list: ${extensions_list}"
 echo "Run tests"
 ant jacocoalltests -Dtestclasses.extensions="$(echo $extensions_list|sed -s 's/ /,/g')"
