@@ -38,9 +38,5 @@ else
     help
     exit 1
 fi
-pwd
-ls -la
-echo "Move to ${WORKDIR}"
-cd ${WORKDIR}
 echo "Run sonar-scanner with params: ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}"
 $SONAR_BIN ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}
