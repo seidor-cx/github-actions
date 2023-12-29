@@ -8,7 +8,6 @@ SONAR_TOKEN=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_token='|cut -d= -f2)
 SONAR_URL=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_url='|cut -d= -f2)
 SONAR_PROPERTIES=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_properties='|cut -d= -f2)
 SONAR_EXTRA_PARAM=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_extra_param='|cut -d= -f2)
-WORKDIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^work_dir='|cut -d= -f2)
 SONAR_BIN="/opt/sonar-scanner/bin/sonar-scanner"
 
 function help(){

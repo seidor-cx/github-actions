@@ -2,9 +2,6 @@ name: 'SonarQube scanner'
 description: 'A simple GitHub Action for build and publish container images over Github Container Registry'
 author: 'Seidor'
 inputs:
-  WORKDIR:
-    description: 'Working directory'
-    required: true
   SONAR_TOKEN:
     description: 'Sonarqube token'
     required: true
@@ -34,9 +31,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: /bin/bash $GITHUB_ACTION_PATH/sonar_scanner.sh work_dir=${{ inputs.WORKDIR }} sonar_url=${{ inputs.SONAR_URL }} sonar_token=${{ inputs.SONAR_TOKEN }} sonar_properties=${{ inputs.SONAR_PROPERTIES_FILE }} pull_request_iid=${{ inputs.PR_IID }} pull_request_source_branch_name=${{ inputs.PR_SOURCE_BRANCH_NAME }} pull_request_target_branch_name=${{ inputs.PR_TARGET_BRANCH_NAME }} sonar_extra_param=${{ inputs.SONAR_EXTRA_PARAM }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/sonar_scanner.sh sonar_url=${{ inputs.SONAR_URL }} sonar_token=${{ inputs.SONAR_TOKEN }} sonar_properties=${{ inputs.SONAR_PROPERTIES_FILE }} pull_request_iid=${{ inputs.PR_IID }} pull_request_source_branch_name=${{ inputs.PR_SOURCE_BRANCH_NAME }} pull_request_target_branch_name=${{ inputs.PR_TARGET_BRANCH_NAME }} sonar_extra_param=${{ inputs.SONAR_EXTRA_PARAM }}
       shell: bash
       if: ${{ inputs.PR_IID != null }}
-    - run: /bin/bash $GITHUB_ACTION_PATH/sonar_scanner.sh work_dir=${{ inputs.WORKDIR }} sonar_url=${{ inputs.SONAR_URL }} sonar_token=${{ inputs.SONAR_TOKEN }} sonar_properties=${{ inputs.SONAR_PROPERTIES_FILE }} branch_name=${{ inputs.BRANCH_NAME }} sonar_extra_param=${{ inputs.SONAR_EXTRA_PARAM }}
+    - run: /bin/bash $GITHUB_ACTION_PATH/sonar_scanner.sh sonar_url=${{ inputs.SONAR_URL }} sonar_token=${{ inputs.SONAR_TOKEN }} sonar_properties=${{ inputs.SONAR_PROPERTIES_FILE }} branch_name=${{ inputs.BRANCH_NAME }} sonar_extra_param=${{ inputs.SONAR_EXTRA_PARAM }}
       shell: bash
       if: ${{ inputs.PR_IID == null }}
