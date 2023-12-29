@@ -57,5 +57,4 @@ jobs:
         SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
         SONAR_URL: ${{ inputs.SONAR_URL }}
         SONAR_PROPERTIES_FILE: ${{ inputs.SONAR_PROPERTIES_FILE }}
-        WORKDIR: ${{ inputs.WORKDIR }}
         BRANCH_NAME: ${{ inputs.SOURCE_BRANCH_NAME }}
