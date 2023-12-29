@@ -8,6 +8,7 @@ SONAR_TOKEN=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_token='|cut -d= -f2)
 SONAR_URL=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_url='|cut -d= -f2)
 SONAR_PROPERTIES=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_properties='|cut -d= -f2)
 SONAR_EXTRA_PARAM=$(echo $*|sed -s 's/ /\n/g'|grep -e '^sonar_extra_param='|cut -d= -f2)
+WORKDIR=$(echo $*|sed -s 's/ /\n/g'|grep -e '^work_dir='|cut -d= -f2)
 SONAR_BIN="/opt/sonar-scanner/bin/sonar-scanner"
 
 function help(){
@@ -16,7 +17,7 @@ function help(){
     echo "# sonar_scanner.sh branch_name=<branch_name>"
     echo "Usage: sonar_scanner.sh pull_request_iid=<pull_request_iid> pull_request_source_branch_name=<pull_request_source_branch_name> pull_request_target_branch_name=<pull_request_target_branch_name>"
     echo "Example: sonar_scanner.sh branch=release/develop"
-    echo "Example: sonar_scanner.sh pull_request_iid=1 pull_request_source_branch_name=feature/feature1 pull_request_target_branch_name=release/develop"
+    echo "Example: sonar_scanner.sh pull_request_iid=1 pull_request_source_branch_name=feature/feature1 pull_request_target_branch_name=release/develop [work_dir=dir] "
 }
 
 if [[ -z "$SONAR_URL" ]] || [[ -z "$SONAR_TOKEN" ]]
@@ -37,5 +38,12 @@ else
     help
     exit 1
 fi
+
+if [[ "$WORKDIR" != "" ]]
+then
+    echo "Move to ${WORKDIR}"
+    cd ${WORKDIR}
+fi
+
 echo "Run sonar-scanner with params: ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}"
 $SONAR_BIN ${SONAR_SOURCE_PARAM} ${SONAR_ACTION_PARAM} ${SONAR_EXTRA_PARAM}
