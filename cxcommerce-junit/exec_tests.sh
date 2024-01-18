@@ -25,12 +25,14 @@ ant initialize -Dtenant=junit
 echo "Load extensions list"
 echo "Get list of directories on ${CXCOMMERCE_HOME}/${CUSTOM_MODULES_DIR}"
 cd ${CXCOMMERCE_HOME}/${CUSTOM_MODULES_DIR}
+ls -1 --color=never|sort
 ls -1 --color=never|sort > ${LIST_EXTENSIONS_DIR}
 echo "Get list of extensions on localextensions.xml"
+cat ${CXCOMMERCE_HOME}/hybris/config/localextensions.xml |grep name|grep -v '\-\->'|cut -d "=" -f2|sed 's/"//g'|sed 's/ \/>//g'|sed "s/'//g"|sed 's/\/>//g'
 cat ${CXCOMMERCE_HOME}/hybris/config/localextensions.xml |grep name|grep -v '\-\->'|cut -d "=" -f2|sed 's/"//g'|sed 's/ \/>//g'|sed "s/'//g"|sed 's/\/>//g'|sort > ${LIST_EXTENSIONS_ACTIVE}
 echo "Save the intersection between localextensions and directories on ${CXCOMMERCE_HOME}/${CUSTOM_MODULES_DIR}"
-echo "DEBUG: show content from ${LIST_EXTENSIONS_WORKS}"
-cat ${LIST_EXTENSIONS_WORKS}
+echo "DEBUG: show content from ${LIST_EXTENSIONS_ACTIVE}"
+cat ${LIST_EXTENSIONS_ACTIVE}
 echo "DEBUG: show content from ${LIST_EXTENSIONS_DIR}"
 cat ${LIST_EXTENSIONS_DIR}
 extensions_list=$(comm -12 ${LIST_EXTENSIONS_DIR} ${LIST_EXTENSIONS_ACTIVE} |grep -v 'cicd' |grep -v 'sampledata' |grep -v 'external' |grep -v 'mirakl' |grep -v 'test')
