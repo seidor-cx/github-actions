@@ -27,5 +27,7 @@ if [ ${INITIALIZE} -eq 0 ]; then
     ant clean all
 else
     echo "Build & Initialize Commerce"
-    ant clean initialize | awk -f $AWK_PARSER
+    #ant clean initialize | awk -f $AWK_PARSER
+    ant clean initialize
+
 fi
