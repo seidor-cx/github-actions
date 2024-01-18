@@ -20,11 +20,14 @@ source setantenv.sh
 echo "Initialize tenant Junit"
 ant initialize -Dtenant=junit
 echo "Load extensions list"
-if [[ "${CUSTOM_MODULES_DIR}" =~ "*" ]] ; then
-    extensions_list=$(find ${CUSTOM_DIR}/${CUSTOM_MODULES_DIR} -maxdepth 0 -type d ! -regex '.*cicd.*' ! -regex '.*sampledata.*' ! -regex '.*external.*' ! -regex '.*mirakl.*' ! -regex '.*test.*' -exec basename {} \;)
-else
-    extensions_list=$(find ${CUSTOM_DIR}/${CUSTOM_MODULES_DIR}/* -mindepth 1 -maxdepth 1 -type d ! -regex '.*cicd.*' ! -regex '.*sampledata.*' ! -regex '.*external.*' ! -regex '.*mirakl.*' ! -regex '.*test.*' -exec basename {} \;)
-fi
+echo "Get list of directories on ${CUSTOM_MODULES_DIR}"
+cd ${CUSTOM_MODULES_DIR}
+ls -1 --color=never|sort > /tmp/list_directories
+cd -
+echo "Get list of extensions on localextensions.xml"
+cat ${CXCOMMERCE_HOME}/hybris/config/localextensions.xml |grep name|grep -v '\-\->'|cut -d "=" -f2|sed 's/"//g'|sed 's/ \/>//g'|sed "s/'//g"|sed 's/\/>//g'|sort > /tmp/list_extensions
+echo "Save the intersection between localextensions and directories on ${CUSTOM_MODULES_DIR}"
+extensions_list=$(comm -12 /tmp/list_directories /tmp/list_extensions |grep -v 'cicd' |grep -v 'sampledata' |grep -v 'external' |grep -v 'mirakl' |grep -v 'test')
 echo "Extensions list: ${extensions_list}"
 echo "Run tests"
 ant jacocoalltests -Dtestclasses.extensions="$(echo $extensions_list|sed -s 's/ /,/g')"
