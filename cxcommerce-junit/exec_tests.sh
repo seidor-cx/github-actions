@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 ##This is a general variables file for the CI/CD pipeline
 CXCOMMERCE_HOME=/opt/cxcommerce
@@ -25,7 +25,7 @@ cd ${CXCOMMERCE_HOME}/${CUSTOM_MODULES_DIR}
 ls -1 --color=never|sort > /tmp/list_directories
 echo "Get list of extensions on localextensions.xml"
 cat ${CXCOMMERCE_HOME}/hybris/config/localextensions.xml |grep name|grep -v '\-\->'|cut -d "=" -f2|sed 's/"//g'|sed 's/ \/>//g'|sed "s/'//g"|sed 's/\/>//g'|sort > /tmp/list_extensions
-echo "Save the intersection between localextensions and directories on ${CUSTOM_MODULES_DIR}"
+echo "Save the intersection between localextensions and directories on ${CXCOMMERCE_HOME}/${CUSTOM_MODULES_DIR}"
 extensions_list=$(comm -12 /tmp/list_directories /tmp/list_extensions |grep -v 'cicd' |grep -v 'sampledata' |grep -v 'external' |grep -v 'mirakl' |grep -v 'test')
 echo "Extensions list: ${extensions_list}"
 echo "Run tests"
