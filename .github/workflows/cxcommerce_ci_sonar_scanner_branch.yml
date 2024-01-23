@@ -79,6 +79,8 @@ jobs:
           MYSQL_DATABASE: ${{ inputs.MYSQL_DATABASE }}
           MYSQL_USER: ${{ inputs.MYSQL_USER }}
           MYSQL_PASSWORD: ${{ inputs.MYSQL_PASSWORD }}
+        ports:
+          - 3306:3306
     steps:
     - uses: actions/checkout@v4.1.1
       with:
