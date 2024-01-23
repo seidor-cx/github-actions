@@ -90,7 +90,7 @@ jobs:
       with:
         SOURCE_BRANCH: ${{ inputs.SOURCE_BRANCH_NAME }}
         TARGET_BRANCH: ${{ inputs.TARGET_BRANCH_NAME }}
-        WORKDIR: custom-cx
+        WORKDIR: ${{ inputs.WORKDIR }}
     - name: Copy Repo files to Container WORKDIR
       run: |
             cp -ra $GITHUB_WORKSPACE/custom-cx/. ${{ inputs.WORKDIR }}
