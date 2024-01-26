@@ -91,3 +91,4 @@ jobs:
         build-args: ${{ inputs.BUILD_ARGS }}
         secrets: ${{ inputs.SECRETS_ENV }}
         secret-files: ${{ inputs.SECRETS_FILE }}
+        platforms: linux/amd64,linux/arm64
