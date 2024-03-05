@@ -86,6 +86,6 @@ jobs:
         file: ${{ inputs.CONTEXT }}/${{ inputs.DOCKERFILE }}
         push: false
         tags: ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }}
-        build-args: ${{ inputs.BUILD_ARGS }}
+        build-args: ${{ steps.set_BUILD_ARGS.outputs.BUILD_ARGS }}
         secrets: ${{ inputs.SECRETS_ENV }}
         secret-files: ${{ inputs.SECRETS_FILE }}
