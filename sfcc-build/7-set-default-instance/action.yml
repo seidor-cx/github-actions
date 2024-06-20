@@ -1,0 +1,21 @@
+name: 'set-default-instance'
+description: 'Sets the default instance'
+author: 'Seidor'
+inputs:
+  CLIENT_ID:
+    description: 'Client ID for authentication'
+    required: true
+  CLIENT_SECRET:
+    description: 'Client secret for authentication'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Authenticate and set default instance'
+      shell: bash -el {0}
+      #run: |
+        #node ${{ env.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "client:auth" "${{ inputs.CLIENT_ID }}" "${{ inputs.CLIENT_SECRET }}"
+      run: |  
+        echo "${{ inputs.CLIENT_ID }}:${{ inputs.CLIENT_SECRET }}"
+        echo "TOOLS_FOLDER: ${{ env.TOOLS_FOLDER }}"

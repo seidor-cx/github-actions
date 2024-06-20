@@ -1,0 +1,11 @@
+name: 'install-yq'
+description: 'Installs yq command to process yml files'
+author: 'Seidor'
+
+runs:
+  using: composite
+  steps:
+    - name: 'install yq'
+      shell: bash -e {0}
+      run: |
+        sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
