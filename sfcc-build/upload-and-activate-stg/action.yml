@@ -1,0 +1,23 @@
+name: 'upload-and-activate'
+description: 'Uploads and activates code version'
+author: 'Seidor'
+inputs:
+  CERT_INSTANCE_URL:
+    description: 'URL for cert instance'
+    required: true
+  CERTIFICATE_PASSWORD:
+    description: 'Secret for the certificate'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Upload to Staging and activate code version'
+      shell: bash -el {0}
+      #run: |
+        #node ${{ env.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "code:deploy" "./${{ env.BUILD_NUMBER }}.zip" -i ${{ inputs.CERT_INSTANCE_URL }} -c "${{ env.CERT_FILE }}" -p "${{ inputs.CERTIFICATE_PASSWORD }}"
+      run: |
+        echo "CERT_INSTANCE_URL: ${{ inputs.CERT_INSTANCE_URL }}"
+        echo "CERT_FILE: ${{ env.CERT_FILE }}"
+        echo "CERTIFICATE_PASSWORD: ${{ inputs.CERTIFICATE_PASSWORD }}"
+        echo "TOOLS_FOLDER: ${{ env.TOOLS_FOLDER }}"

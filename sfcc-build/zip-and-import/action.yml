@@ -1,0 +1,17 @@
+name: 'zip-and-import'
+description: 'Zips and imports metadata'
+author: 'Seidor'
+
+runs:
+  using: composite
+  steps:
+    - name: 'ZIP and import metadata'
+      shell: bash -el {0}
+      #run: |
+        #zip -qq -r metadata.zip metadata
+        #sfcc-ci instance:upload metadata.zip
+        #sfcc-ci instance:import metadata.zip -s -f
+      run: |
+        echo "zip -qq -r metadata.zip metadata"
+        echo "sfcc-ci instance:upload metadata.zip"
+        echo "sfcc-ci instance:import metadata.zip -s -f"

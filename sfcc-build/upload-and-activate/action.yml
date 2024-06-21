@@ -1,0 +1,18 @@
+name: 'upload-and-activate'
+description: 'Uploads and activates code version'
+author: 'Seidor'
+inputs:
+  ENVIRONMENT_URL:
+    description: 'Environment URL'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Upload and activate code version'
+      shell: bash -el {0}
+      #run: |
+        #node ${{ env.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "code:deploy" "./${{ env.BUILD_NUMBER }}.zip" -i "${{ inputs.ENVIRONMENT_URL }}" -a
+      run: |
+        echo "${{ inputs.ENVIRONMENT_URL }}"
+        echo "TOOLS_FOLDER:${{ env.TOOLS_FOLDER }}"
