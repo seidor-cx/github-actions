@@ -8,6 +8,9 @@ inputs:
   CLIENT_SECRET:
     description: 'Client secret for authentication'
     required: true
+  ENVIRONMENT_URL:
+    description: 'Environment URL'
+    required: true
 
 runs:
   using: composite
@@ -16,3 +19,4 @@ runs:
       shell: bash -el {0}
       run: |
         node ${{ env.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "client:auth" "${{ inputs.CLIENT_ID }}" "${{ inputs.CLIENT_SECRET }}"
+        #node ${{ env.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "instance:add" ${{ inputs.ENVIRONMENT_URL }} -d
