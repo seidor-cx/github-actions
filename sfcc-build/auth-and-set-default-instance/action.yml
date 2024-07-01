@@ -1,0 +1,24 @@
+name: 'auth-and-set-default-instance'
+description: 'Authenticates and sets the default instance'
+author: 'Seidor'
+inputs:
+  CLIENT_ID:
+    description: 'Client ID for authentication'
+    required: true
+  CLIENT_SECRET:
+    description: 'Client secret for authentication'
+    required: true
+  ENVIRONMENT_URL:
+    description: 'Environment URL'
+    required: true
+  TOOLS_FOLDER:
+    description: 'Path to your salesforce tools folder'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Authenticate and set default instance'
+      shell: bash -el {0}
+      run: |
+        node ${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "client:auth" "${{ inputs.CLIENT_ID }}" "${{ inputs.CLIENT_SECRET }}"
+        #node ${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "instance:add" ${{ inputs.ENVIRONMENT_URL }} -d

@@ -1,6 +1,9 @@
 name: 'install-tools'
 description: 'Installs Salesforce tools'
 author: 'Seidor'
+inputs:
+  TOOLS_FOLDER:
+    description: 'Path to your salesforce tools folder'
 
 runs:
   using: composite
@@ -10,4 +13,4 @@ runs:
       run: |
         VERSION=$(nvm ls --no-alias | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | tail -n1)
         node -v && nvm use $VERSION && node -v
-        cd ${{ env.TOOLS_FOLDER }} && npm install sfcc-ci && cd $GITHUB_WORKSPACE
+        cd ${{ inputs.TOOLS_FOLDER }} && npm install sfcc-ci && cd $GITHUB_WORKSPACE

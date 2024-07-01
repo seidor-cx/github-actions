@@ -1,6 +1,9 @@
 name: 'create-artifact'
 description: 'Creates the code-version "Artifact"'
 author: 'Seidor'
+inputs:
+  BUILD_NUMBER:
+    description: '(Tag, Release, etc.)'
 
 runs:
   using: composite
@@ -10,6 +13,6 @@ runs:
       run: |
         cd $GITHUB_WORKSPACE
         chmod +x ./build.sh
-        ./build.sh "${{ env.BUILD_NUMBER }}"
-        mv ./temp/${{ env.BUILD_NUMBER }} ${{ env.BUILD_NUMBER }}
-        zip -qq -r ./${{ env.BUILD_NUMBER }}.zip ./${{ env.BUILD_NUMBER }}
+        ./build.sh "${{ inputs.BUILD_NUMBER }}"
+        mv ./temp/${{ inputs.BUILD_NUMBER }} ${{ inputs.BUILD_NUMBER }}
+        zip -qq -r ./${{ inputs.BUILD_NUMBER }}.zip ./${{ inputs.BUILD_NUMBER }}
