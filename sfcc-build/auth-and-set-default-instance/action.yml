@@ -11,6 +11,8 @@ inputs:
   ENVIRONMENT_URL:
     description: 'Environment URL'
     required: true
+  TOOLS_FOLDER:
+    description: 'Path to your salesforce tools folder'
 
 runs:
   using: composite
@@ -18,5 +20,5 @@ runs:
     - name: 'Authenticate and set default instance'
       shell: bash -el {0}
       run: |
-        node ${{ env.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "client:auth" "${{ inputs.CLIENT_ID }}" "${{ inputs.CLIENT_SECRET }}"
-        #node ${{ env.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "instance:add" ${{ inputs.ENVIRONMENT_URL }} -d
+        node ${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "client:auth" "${{ inputs.CLIENT_ID }}" "${{ inputs.CLIENT_SECRET }}"
+        #node ${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "instance:add" ${{ inputs.ENVIRONMENT_URL }} -d

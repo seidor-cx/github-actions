@@ -1,6 +1,9 @@
 name: 'compile-statics'
 description: 'Compilation step'
 author: 'Seidor'
+inputs:
+  CFG_FILE:
+    description: 'The path to your config.yml file'
 
 runs:
   using: composite
@@ -8,14 +11,14 @@ runs:
     - name: 'Compile Statics'
       shell: bash -el {0}
       run: |
-        for VERSION in $(yq e '.node_version | keys | .[]' ${{ env.CFG_FILE }}); do
+        for VERSION in $(yq e '.node_version | keys | .[]' ${{ inputs.CFG_FILE }}); do
           node -v && nvm use $VERSION && node -v
           echo "Compiling statics for version $VERSION:"
-          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' ${{ env.CFG_FILE }}); do
-            FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' ${{ env.CFG_FILE }})
+          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' ${{ inputs.CFG_FILE }}); do
+            FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' ${{ inputs.CFG_FILE }})
             cd $GITHUB_WORKSPACE/$FOLDER
             echo "Compiling statics for cartridge $CARTRIDGE:"
-            yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".compilation | .[]' ${{ env.CFG_FILE }} | xargs -I {} bash -e -c "{}"
+            yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".compilation | .[]' ${{ inputs.CFG_FILE }} | xargs -I {} bash -e -c "{}"
             echo "Statics for cartridge $CARTRIDGE have been compiled"
           done
         done
