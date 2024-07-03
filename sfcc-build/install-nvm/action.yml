@@ -15,5 +15,5 @@ runs:
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash -e
         cat ~/.bashrc
         source $HOME/.nvm/nvm.sh
-        for VERSION in $(yq e '.node_version | keys | .[]' ${{ inputs.CFG_FILE }}); do nvm install $VERSION; done
+        for VERSION in $(yq e '.node_version | keys | .[]' "${{ inputs.CFG_FILE }}"); do nvm install $VERSION; done
         nvm ls --no-alias && nvm use $VERSION && node -v && nvm -v
