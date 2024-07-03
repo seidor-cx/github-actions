@@ -8,11 +8,15 @@ inputs:
   CLIENT_SECRET:
     description: 'Client secret for authentication'
     required: true
-  ENVIRONMENT_URL:
-    description: 'Environment URL'
+  INSTANCE_URL:
+    description: 'Instance URL'
     required: true
   TOOLS_FOLDER:
     description: 'Path to your salesforce tools folder'
+    required: true
+  DEFAULT_INSTANCE:
+    description: 'Whether or not to set instance as default'
+    default: 'false'
 
 runs:
   using: composite
@@ -21,4 +25,6 @@ runs:
       shell: bash -el {0}
       run: |
         node ${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "client:auth" "${{ inputs.CLIENT_ID }}" "${{ inputs.CLIENT_SECRET }}"
-        #node ${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "instance:add" ${{ inputs.ENVIRONMENT_URL }} -d
+        if [ "${{ inputs.DEFAULT_INSTANCE }}" = "true" ]; then
+          node ${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js "instance:add" ${{ inputs.INSTANCE_URL }} -d
+        fi

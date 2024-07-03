@@ -4,6 +4,7 @@ author: 'Seidor'
 inputs:
   BUILD_NUMBER:
     description: '(Tag, Release, etc.)'
+    required: true
 
 runs:
   using: composite

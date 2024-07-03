@@ -3,7 +3,8 @@ description: 'Installs NVM & NODE versions'
 author: 'Seidor'
 inputs:
   CFG_FILE:
-    description: 'The path to your config.yml file'
+    description: 'Path to your config.yml file'
+    default: '.github/config/config.yml'
 
 runs:
   using: composite
