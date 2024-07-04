@@ -1,6 +1,10 @@
 name: 'install-nvm'
 description: 'Installs NVM & NODE versions'
 author: 'Seidor'
+inputs:
+  CFG_FILE:
+    description: 'Path to your config.yml file'
+    default: '.github/config/config.yml'
 
 runs:
   using: composite
@@ -11,5 +15,5 @@ runs:
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash -e
         cat ~/.bashrc
         source $HOME/.nvm/nvm.sh
-        for VERSION in $(yq e '.node_version | keys | .[]' ${{ env.CFG_FILE }}); do nvm install $VERSION; done
+        for VERSION in $(yq e '.node_version | keys | .[]' "${{ inputs.CFG_FILE }}"); do nvm install $VERSION; done
         nvm ls --no-alias && nvm use $VERSION && node -v && nvm -v

@@ -1,6 +1,10 @@
 name: 'install-node-modules'
 description: 'Installs cartridges'
 author: 'Seidor'
+inputs:
+  CFG_FILE:
+    description: 'Path to your config.yml file'
+    default: '.github/config/config.yml'
 
 runs:
   using: composite
@@ -8,14 +12,12 @@ runs:
     - name: 'install node modules'
       shell: bash -el {0}
       run: |
-        for VERSION in $(yq e '.node_version | keys | .[]' ${{ env.CFG_FILE }}); do
+        for VERSION in $(yq e '.node_version | keys | .[]' "${{ inputs.CFG_FILE }}"); do
           node -v && nvm use $VERSION && node -v
           echo "Installing cartridges for version $VERSION:"
-          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' ${{ env.CFG_FILE }}); do
-            FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' ${{ env.CFG_FILE }})
-            cd $GITHUB_WORKSPACE/$FOLDER
-            #INSTALL=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".installation' ${{ env.CFG_FILE }})
-            #$INSTALL
+          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' "${{ inputs.CFG_FILE }}"); do
+            FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "${{ inputs.CFG_FILE }}")
+            cd "$GITHUB_WORKSPACE/$FOLDER"
             npm install
             echo "$CARTRIDGE installed"
           done
