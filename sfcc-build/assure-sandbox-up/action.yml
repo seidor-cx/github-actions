@@ -21,6 +21,6 @@ runs:
           --header "accept: application/json" \
           --header "Authorization: Bearer ${{ inputs.SFCC_TOKEN }}")
           STATE=$(echo $RESPONSE | jq -r '.data.state')
-          sleep 30
+          if [ "$STATE" != "started" ]; then sleep 30; fi
         done
         echo $RESPONSE
