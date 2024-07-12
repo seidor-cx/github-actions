@@ -1,0 +1,26 @@
+name: 'assure-sandbox-up'
+description: 'Makes sure the sandbox is in started state'
+author: 'Seidor'
+inputs:
+  SANDBOX_ID:
+    description: 'Sandbox ID'
+    required: true
+  SFCC_TOKEN:
+    description: 'Token used for authentication in api calls'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'assure-sandbox-up'
+      shell: bash -e {0}
+      run: |
+        STATE=""
+        while [ "$STATE" != "started" ]; do
+          RESPONSE=$(curl --location "https://admin.dx.commercecloud.salesforce.com/api/v1/sandboxes/${{ inputs.SANDBOX_ID }}" \
+          --header "accept: application/json" \
+          --header "Authorization: Bearer ${{ inputs.SFCC_TOKEN }}")
+          STATE=$(echo $RESPONSE | jq -r '.data.state')
+          sleep 30
+        done
+        echo $RESPONSE

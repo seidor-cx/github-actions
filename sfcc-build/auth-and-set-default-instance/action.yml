@@ -17,13 +17,24 @@ inputs:
   SET_DEFAULT_INSTANCE:
     description: 'Whether or not to set instance as default'
     default: 'false'
+outputs:
+  SFCC_TOKEN:
+    description: 'Token used for authentication in api calls'
+    value: ${{ steps.one.outputs.SFCC_TOKEN }}
 
 runs:
   using: composite
   steps:
     - name: 'Authenticate and set default instance'
+      id: 'one'
       shell: bash -el {0}
       run: |
+        TOOLS_FOLDER="$GITHUB_WORKSPACE/${{ inputs.TOOLS_FOLDER }}"
         ADD_DEFAULT_INSTANCE=$([ "${{ inputs.SET_DEFAULT_INSTANCE }}" = "true" ] && echo "-d" || echo "")
-        node "${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js" "client:auth" ${{ inputs.CLIENT_ID }} ${{ inputs.CLIENT_SECRET }}
-        node "${{ inputs.TOOLS_FOLDER }}/node_modules/sfcc-ci/cli.js" "instance:add" ${{ inputs.INSTANCE_URL }} ${ADD_DEFAULT_INSTANCE}
+        node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth" ${{ inputs.CLIENT_ID }} ${{ inputs.CLIENT_SECRET }}
+
+        #node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "instance:add" ${{ inputs.INSTANCE_URL }} ${ADD_DEFAULT_INSTANCE}
+        echo "node \"$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js\" \"instance:add\" ${{ inputs.INSTANCE_URL }} ${ADD_DEFAULT_INSTANCE}"
+        
+        TOKEN=$(node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth:token")
+        echo "SFCC_TOKEN=$TOKEN" >> $GITHUB_OUTPUT

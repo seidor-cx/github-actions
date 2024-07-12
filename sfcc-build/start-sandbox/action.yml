@@ -1,0 +1,24 @@
+name: 'start-sandbox'
+description: 'Starts sandbox'
+author: 'Seidor'
+inputs:
+  SANDBOX_ID:
+    description: 'Sandbox ID'
+    required: true
+  SFCC_TOKEN:
+    description: 'Token used for authentication in api calls'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'start-sandbox'
+      shell: bash -e {0}
+      run: |
+        curl --location "https://admin.dx.commercecloud.salesforce.com/api/v1/sandboxes/${{ inputs.SANDBOX_ID }}/operations" \
+        --header "Accept: application/json" \
+        --header "Content-Type: application/json" \
+        --header "Authorization: Bearer ${{ inputs.SFCC_TOKEN }}" \
+        --data '{
+        "operation": "start"
+        }'
