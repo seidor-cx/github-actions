@@ -1,0 +1,16 @@
+name: 'Lint JS issues'
+description: 'Iterates through all changed files and lints JS files'
+author: 'Seidor'
+inputs:
+  ALL_CHANGED_FILES:
+    description: 'All changed files in the PR'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Lint JS issues'
+      shell: bash -e {0}
+      run: |
+        FILES_JS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | xargs)
+        npm run lint:js:ci -- $FILES_JS

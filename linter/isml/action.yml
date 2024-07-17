@@ -1,0 +1,16 @@
+name: 'Lint ISML issues'
+description: 'Iterates through all changed files and lints ISML files'
+author: 'Seidor'
+inputs:
+  ALL_CHANGED_FILES:
+    description: 'All changed files in the PR'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Lint ISML issues'
+      shell: bash -e {0}
+      run: |
+        FILES_ISML=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".isml$" | xargs)
+        npm run lint:isml:ci -- $FILES_ISML
