@@ -10,7 +10,7 @@ runs:
   using: composite
   steps:
     - name: 'Lint JS issues'
-      shell: bash -e {0}
+      shell: bash -el {0}
       run: |
         FILES_JS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | xargs)
         npm run lint:js:ci -- $FILES_JS
