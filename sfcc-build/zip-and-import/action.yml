@@ -8,8 +8,9 @@ runs:
     - name: 'ZIP and import metadata'
       shell: bash -el {0}
       run: |
+        echo "Zipping metadata..."
         zip -qq -r metadata.zip metadata
+        echo "Uploading and importing metadata..."
         sfcc-ci instance:upload metadata.zip
         sfcc-ci instance:import metadata.zip -s -f
-        
-        #echo "zip -qq -r metadata.zip metadata sfcc-ci instance:upload metadata.zip sfcc-ci instance:import metadata.zip -s -f"
+        echo "Metadata imported"

@@ -20,13 +20,13 @@ inputs:
 outputs:
   SFCC_TOKEN:
     description: 'Token used for authentication in api calls'
-    value: ${{ steps.one.outputs.SFCC_TOKEN }}
+    value: ${{ steps.token.outputs.SFCC_TOKEN }}
 
 runs:
   using: composite
   steps:
     - name: 'Authenticate and set default instance'
-      id: 'one'
+      id: 'token'
       shell: bash -el {0}
       run: |
         TOOLS_FOLDER="$GITHUB_WORKSPACE/${{ inputs.TOOLS_FOLDER }}"
@@ -38,4 +38,3 @@ runs:
         echo "SFCC_TOKEN=$TOKEN" >> $GITHUB_OUTPUT
 
         node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "instance:add" ${{ inputs.INSTANCE_URL }} ${ADD_DEFAULT_INSTANCE}
-        #echo "node \"$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js\" \"instance:add\" ${{ inputs.INSTANCE_URL }} ${ADD_DEFAULT_INSTANCE}"

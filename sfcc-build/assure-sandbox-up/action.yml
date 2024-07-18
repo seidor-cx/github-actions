@@ -8,6 +8,9 @@ inputs:
   SFCC_TOKEN:
     description: 'Token used for authentication in api calls'
     required: true
+  TIMEOUT:
+    description: 'Timeout in seconds'
+    default: '300'
 
 runs:
   using: composite
@@ -16,11 +19,23 @@ runs:
       shell: bash -e {0}
       run: |
         STATE=""
-        while [ "$STATE" != "started" ]; do
+        END_TIME=$((SECONDS + ${{ inputs.TIMEOUT }}))
+
+        while [ $SECONDS -lt $END_TIME ]; do
           RESPONSE=$(curl --location "https://admin.dx.commercecloud.salesforce.com/api/v1/sandboxes/${{ inputs.SANDBOX_ID }}" \
           --header "accept: application/json" \
           --header "Authorization: Bearer ${{ inputs.SFCC_TOKEN }}")
+
+          echo $RESPONSE
           STATE=$(echo $RESPONSE | jq -r '.data.state')
-          if [ "$STATE" != "started" ]; then sleep 30; fi
+
+          if [ "$STATE" == "started" ]; then
+            echo "Sandbox is in started state."
+            exit 0
+          fi
+
+          sleep 30
         done
-        echo $RESPONSE
+
+        echo "Sandbox did not start within the time limit."
+        exit 1
