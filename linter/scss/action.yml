@@ -1,0 +1,16 @@
+name: 'Lint SCSS issues'
+description: 'Iterates through all changed files and lints SCSS files'
+author: 'Seidor'
+inputs:
+  ALL_CHANGED_FILES:
+    description: 'All changed files in the PR'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Lint SCSS issues'
+      shell: bash -el {0}
+      run: |
+        FILES_CSS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep  -E ".scss$" | xargs)
+        npm run lint:css:ci -- $FILES_CSS
