@@ -18,24 +18,30 @@ runs:
     - name: 'assure-sandbox-up'
       shell: bash -e {0}
       run: |
-        STATE=""
-        END_TIME=$((SECONDS + ${{ inputs.TIMEOUT }}))
-
-        while [ $SECONDS -lt $END_TIME ]; do
-          RESPONSE=$(curl --location "https://admin.dx.commercecloud.salesforce.com/api/v1/sandboxes/${{ inputs.SANDBOX_ID }}" \
+        api() {
+          curl --location "https://admin.dx.commercecloud.salesforce.com/api/v1/sandboxes/${1}" \
           --header "accept: application/json" \
-          --header "Authorization: Bearer ${{ inputs.SFCC_TOKEN }}")
+          --header "Authorization: Bearer $2"
+        }
 
-          echo $RESPONSE
-          STATE=$(echo $RESPONSE | jq -r '.data.state')
+        END_TIME=$((SECONDS + ${{ inputs.TIMEOUT }}))
+        RESPONSE=$(api ${{ inputs.SANDBOX_ID }} ${{ inputs.SFCC_TOKEN }})
+        STATE=$(echo $RESPONSE | jq -r '.data.state')
+        echo $RESPONSE
 
-          if [ "$STATE" == "started" ]; then
-            echo "Sandbox is in started state."
-            exit 0
-          fi
-
+        while [ $SECONDS -lt $END_TIME ] || [ "$STATE" != "started" ]; do
           sleep 30
+          RESPONSE=$(api ${{ inputs.SANDBOX_ID }} ${{ inputs.SFCC_TOKEN }})
+          STATE=$(echo $RESPONSE | jq -r '.data.state')
+          echo $RESPONSE
         done
 
-        echo "Sandbox did not start within the time limit."
-        exit 1
+        if [ "$STATE" = "started" ]; then
+          echo "Sandbox is up and running."
+          EXIT_CODE=0
+        else
+          echo "Sandbox did not start within the time limit."
+          EXIT_CODE=1
+        fi
+
+        exit $EXIT_CODE
