@@ -39,9 +39,11 @@ runs:
 
         if [ "$STATE" = "started" ]; then
           echo "Sandbox is up and running."
+          echo "Finish time: $(date +"%Y-%m-%dT%H:%M:%S")"
           EXIT_CODE=0
         else
-          echo "Sandbox did not start within the time limit."
+          echo "ERR: Sandbox did not start within the time limit."
+          echo "Finish time: $(date +"%Y-%m-%dT%H:%M:%S")"
           EXIT_CODE=1
         fi
 
