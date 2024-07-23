@@ -1,0 +1,50 @@
+name: 'assure-sandbox-up'
+description: 'Makes sure the sandbox is in started state'
+author: 'Seidor'
+inputs:
+  SANDBOX_ID:
+    description: 'Sandbox ID'
+    required: true
+  SFCC_TOKEN:
+    description: 'Token used for authentication in api calls'
+    required: true
+  TIMEOUT:
+    description: 'Timeout in seconds'
+    default: '300'
+
+runs:
+  using: composite
+  steps:
+    - name: 'assure-sandbox-up'
+      shell: bash -e {0}
+      run: |
+        api() {
+          curl --location "https://admin.dx.commercecloud.salesforce.com/api/v1/sandboxes/${1}" \
+          --header "accept: application/json" \
+          --header "Authorization: Bearer $2"
+        }
+
+        SECONDS=0
+        END_TIME=$((SECONDS + ${{ inputs.TIMEOUT }}))
+        RESPONSE=$(api ${{ inputs.SANDBOX_ID }} ${{ inputs.SFCC_TOKEN }})
+        STATE=$(echo $RESPONSE | jq -r '.data.state')
+        echo -e "API call sent: $(date +"%Y-%m-%dT%H:%M:%S")\n$RESPONSE"
+
+        while [ $SECONDS -lt $END_TIME ] && [ "$STATE" != "started" ]; do
+          sleep 30
+          RESPONSE=$(api ${{ inputs.SANDBOX_ID }} ${{ inputs.SFCC_TOKEN }})
+          STATE=$(echo $RESPONSE | jq -r '.data.state')
+          echo -e "API call sent: $(date +"%Y-%m-%dT%H:%M:%S")\n$RESPONSE"
+        done
+
+        if [ "$STATE" = "started" ]; then
+          echo "Sandbox is up and running."
+          echo "Finish time: $(date +"%Y-%m-%dT%H:%M:%S")"
+          EXIT_CODE=0
+        else
+          echo "ERR: Sandbox did not start within the time limit."
+          echo "Finish time: $(date +"%Y-%m-%dT%H:%M:%S")"
+          EXIT_CODE=1
+        fi
+
+        exit $EXIT_CODE

@@ -12,14 +12,15 @@ runs:
     - name: 'Compile Statics'
       shell: bash -el {0}
       run: |
-        for VERSION in $(yq e '.node_version | keys | .[]' "${{ inputs.CFG_FILE }}"); do
+        CFG_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_FILE }}"
+        for VERSION in $(yq e '.node_version | keys | .[]' "$CFG_FILE"); do
           node -v && nvm use $VERSION && node -v
           echo "Compiling statics for version $VERSION:"
-          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' "${{ inputs.CFG_FILE }}"); do
-            FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "${{ inputs.CFG_FILE }}")
+          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' "$CFG_FILE"); do
+            FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "$CFG_FILE")
             cd "$GITHUB_WORKSPACE/$FOLDER"
             echo "Compiling statics for cartridge $CARTRIDGE:"
-            yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".compilation | .[]' "${{ inputs.CFG_FILE }}" | xargs -I {} bash -e -c "{}"
+            yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".compilation | .[]' "$CFG_FILE" | xargs -I {} bash -e -c "{}"
             echo "Statics for cartridge $CARTRIDGE have been compiled"
           done
         done
