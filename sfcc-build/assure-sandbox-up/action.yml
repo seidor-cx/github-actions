@@ -24,16 +24,17 @@ runs:
           --header "Authorization: Bearer $2"
         }
 
+        SECONDS=0
         END_TIME=$((SECONDS + ${{ inputs.TIMEOUT }}))
         RESPONSE=$(api ${{ inputs.SANDBOX_ID }} ${{ inputs.SFCC_TOKEN }})
         STATE=$(echo $RESPONSE | jq -r '.data.state')
-        echo $RESPONSE
+        echo -e "API call sent: $(date +"%Y-%m-%dT%H:%M:%S")\n$RESPONSE"
 
-        while [ $SECONDS -lt $END_TIME ] || [ "$STATE" != "started" ]; do
+        while [ $SECONDS -lt $END_TIME ] && [ "$STATE" != "started" ]; do
           sleep 30
           RESPONSE=$(api ${{ inputs.SANDBOX_ID }} ${{ inputs.SFCC_TOKEN }})
           STATE=$(echo $RESPONSE | jq -r '.data.state')
-          echo $RESPONSE
+          echo -e "API call sent: $(date +"%Y-%m-%dT%H:%M:%S")\n$RESPONSE"
         done
 
         if [ "$STATE" = "started" ]; then
