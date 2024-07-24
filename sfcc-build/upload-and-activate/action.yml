@@ -33,7 +33,7 @@ runs:
         TOOLS_FOLDER="$GITHUB_WORKSPACE/${{ inputs.TOOLS_FOLDER }}"
         CERT_FILE="$GITHUB_WORKSPACE/${{ inputs.CERT_FILE }}"
         ENV_URL=$([ "${{ inputs.ENVIRONMENT }}" = "staging" ] && echo "${{ inputs.CERT_INSTANCE_URL }}" || echo "${{ inputs.INSTANCE_URL }}")
-        CERT_PARAMS=$([ "${{ inputs.ENVIRONMENT }}" = "staging" ] && echo "-c \"$CERT_FILE\" -p "${{ inputs.CERTIFICATE_PASSWORD }}"" || echo "")
+        CERT_PARAMS=$([ "${{ inputs.ENVIRONMENT }}" = "staging" ] && echo "-c \"$CERT_FILE\" -p \"${{ inputs.CERTIFICATE_PASSWORD }}\"" || echo "")
         ACTIVATE_FLAG=$([ "${{ inputs.ACTIVATE }}" = "true" ] && echo "-a" || echo "")
         
         node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "code:deploy" "./${{ inputs.BUILD_NUMBER }}.zip\" -i $ENV_URL $CERT_PARAMS $ACTIVATE_FLAG
