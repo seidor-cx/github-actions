@@ -10,7 +10,7 @@ runs:
   using: composite
   steps:
     - name: 'Lint SCSS issues'
-      shell: bash -el {0}
+      shell: bash
       run: |
         FILES_CSS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep  -E ".scss$" | xargs)
         npm run lint:css:ci -- $FILES_CSS
