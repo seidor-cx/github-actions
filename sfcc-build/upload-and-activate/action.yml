@@ -28,7 +28,7 @@ runs:
   using: composite
   steps:
     - name: 'Upload and activate code version'
-      shell: bash -el {0}
+      shell: bash -e {0}
       run: |
         TOOLS_FOLDER="$GITHUB_WORKSPACE/${{ inputs.TOOLS_FOLDER }}"
         CERT_FILE="$GITHUB_WORKSPACE/${{ inputs.CERT_FILE }}"
