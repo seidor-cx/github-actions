@@ -6,7 +6,7 @@ runs:
   using: composite
   steps:
     - name: 'ZIP and import metadata'
-      shell: bash -el {0}
+      shell: bash -e {0}
       run: |
         echo "Zipping metadata..."
         zip -qq -r metadata.zip metadata

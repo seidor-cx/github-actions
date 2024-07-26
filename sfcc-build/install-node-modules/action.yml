@@ -10,9 +10,10 @@ runs:
   using: composite
   steps:
     - name: 'install node modules'
-      shell: bash -el {0}
+      shell: bash -e {0}
       run: |
         CFG_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_FILE }}"
+        source $HOME/.nvm/nvm.sh
         for VERSION in $(yq e '.node_version | keys | .[]' "$CFG_FILE"); do
           node -v && nvm use $VERSION && node -v
           echo "Installing cartridges for version $VERSION:"

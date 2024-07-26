@@ -27,7 +27,7 @@ runs:
   steps:
     - name: 'Authenticate and set default instance'
       id: 'token'
-      shell: bash -el {0}
+      shell: bash -e {0}
       run: |
         TOOLS_FOLDER="$GITHUB_WORKSPACE/${{ inputs.TOOLS_FOLDER }}"
         ADD_DEFAULT_INSTANCE=$([ "${{ inputs.SET_DEFAULT_INSTANCE }}" = "true" ] && echo "-d" || echo "")
