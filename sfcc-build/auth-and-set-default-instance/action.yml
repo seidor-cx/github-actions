@@ -33,8 +33,8 @@ runs:
         ADD_DEFAULT_INSTANCE=$([ "${{ inputs.SET_DEFAULT_INSTANCE }}" = "true" ] && echo "-d" || echo "")
         TOKEN=""
         
-        node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth" ${{ inputs.CLIENT_ID }} ${{ inputs.CLIENT_SECRET }}
-        TOKEN=$(node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth:token")
-        echo "SFCC_TOKEN=$TOKEN" >> $GITHUB_OUTPUT
+        echo "node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth" ${{ inputs.CLIENT_ID }} ${{ inputs.CLIENT_SECRET }}"
+        echo "TOKEN=$(node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth:token")"
+        #echo "SFCC_TOKEN=$TOKEN" >> $GITHUB_OUTPUT
 
-        node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "instance:add" ${{ inputs.INSTANCE_URL }} ${ADD_DEFAULT_INSTANCE}
+        echo "node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "instance:add" ${{ inputs.INSTANCE_URL }} ${ADD_DEFAULT_INSTANCE}"
