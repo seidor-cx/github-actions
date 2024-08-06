@@ -5,6 +5,9 @@ inputs:
   ALL_CHANGED_FILES:
     description: 'All changed files in the PR'
     required: true
+  WORKING_DIRECTORY:
+    description: ''
+    required: true
 
 runs:
   using: composite
@@ -13,4 +16,5 @@ runs:
       shell: bash
       run: |
         FILES_CSS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep  -E ".scss$" | xargs)
+        cd ${{ inputs.WORKING_DIRECTORY }}
         npm run lint:css:ci -- $FILES_CSS
