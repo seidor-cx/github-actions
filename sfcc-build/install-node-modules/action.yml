@@ -24,4 +24,5 @@ runs:
             echo "$CARTRIDGE installed"
           done
         done
+        cd "$GITHUB_WORKSPACE"
         echo "Information: Project setup completed"
