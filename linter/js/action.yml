@@ -13,4 +13,10 @@ runs:
       shell: bash
       run: |
         FILES_JS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | xargs)
-        npm run lint:js:ci -- $FILES_JS
+        if [ -n "$FILES_JS" ]; then
+          echo "JS files detected."
+          npm run lint:js:ci -- $FILES_JS
+          echo "JS files linted."
+        else
+          echo "No JS files detected."
+        fi
