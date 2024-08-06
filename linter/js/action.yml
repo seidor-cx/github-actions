@@ -12,20 +12,5 @@ runs:
     - name: 'Lint JS issues'
       shell: bash
       run: |
-        # Initial files
-        FILES=$(echo "${{ inputs.ALL_CHANGED_FILES }}")
-
-        # Debug: Show initial files
-        echo "Initial files: $FILES"
-
-        # Filter .js files
-        FILES_JS=$(echo "$FILES" | tr ' ' '\n' | grep -E ".js$" | xargs)
-
-        # Debug: Show JS files
-        echo "Detected JS files: $FILES_JS"
-
-        if [ -n "$FILES_JS" ]; then
-          echo "Linting JS files..."
-          npm run lint:js:ci -- $FILES_JS || { echo 'Linting failed'; exit 1; }
-          echo "JS files linted."
-        fi
+        FILES_JS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | xargs)
+        npm run lint:js:ci -- $FILES_JS
