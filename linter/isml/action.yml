@@ -15,6 +15,6 @@ runs:
     - name: 'Lint ISML issues'
       shell: bash
       run: |
-        FILES_ISML=$(echo "$GITHUB_WORKSPACE/${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".isml$" | xargs)
+        FILES_ISML=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".isml$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | xargs)
         cd ${{ inputs.WORKING_DIRECTORY }}
         npm run lint:isml:ci -- $FILES_ISML

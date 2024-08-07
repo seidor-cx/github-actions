@@ -15,6 +15,6 @@ runs:
     - name: 'Lint JS issues'
       shell: bash
       run: |
-        FILES_JS=$(echo "$GITHUB_WORKSPACE/${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | xargs)
+        FILES_JS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | xargs)
         cd ${{ inputs.WORKING_DIRECTORY }}
         npm run lint:js:ci -- $FILES_JS
