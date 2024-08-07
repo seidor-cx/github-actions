@@ -15,6 +15,6 @@ runs:
     - name: 'Lint SCSS issues'
       shell: bash
       run: |
-        FILES_CSS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep  -E ".scss$" | xargs)
+        FILES_CSS=$(echo "$GITHUB_WORKSPACE/${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep  -E ".scss$" | xargs)
         cd ${{ inputs.WORKING_DIRECTORY }}
         npm run lint:css:ci -- $FILES_CSS
