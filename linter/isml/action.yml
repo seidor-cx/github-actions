@@ -13,7 +13,7 @@ runs:
   using: composite
   steps:
     - name: 'Lint ISML issues'
-      shell: bash
+      shell: bash -e {0}
       run: |
         CFG_LINT_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_LINT_FILE }}"
         for VERSION in $(yq e '.node_version | keys | .[]' "$CFG_LINT_FILE"); do
