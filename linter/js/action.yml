@@ -5,12 +5,39 @@ inputs:
   ALL_CHANGED_FILES:
     description: 'All changed files in the PR'
     required: true
+  CFG_LINT_FILE:
+    description: 'Path to your lint.yml file'
+    default: '.github/config/lint.yml'
 
 runs:
   using: composite
   steps:
     - name: 'Lint JS issues'
-      shell: bash
+      shell: bash -e {0}
       run: |
-        FILES_JS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | xargs)
-        npm run lint:js:ci -- $FILES_JS
+        CFG_LINT_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_LINT_FILE }}"
+        LINT_ERRORS=0
+
+        for VERSION in $(yq e '.node_version | keys | .[]' "$CFG_LINT_FILE"); do
+          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' "$CFG_LINT_FILE"); do
+            FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "$CFG_LINT_FILE")
+            FILES_JS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | grep $FOLDER | xargs)
+            if [ -n "$FILES_JS" ]; then
+              echo "Linting files in $FOLDER"
+              set +e
+              #cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:js:ci -- $FILES_JS
+              cd "$GITHUB_WORKSPACE/$FOLDER" && $(yq '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".js' "$CFG_LINT_FILE") $FILES_JS
+              EXIT_CODE=$?
+              if [ $EXIT_CODE -ne 0 ]; then let LINT_ERRORS+=1; fi
+              set -e
+            else
+              echo "No files to lint in $FOLDER"
+            fi
+          done
+        done
+
+        cd "$GITHUB_WORKSPACE"
+        if [ $LINT_ERRORS -gt 0 ]; then
+          echo "Linting failed. Check the issues and correct them before committing."
+          exit 1
+        fi
