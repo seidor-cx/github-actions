@@ -25,7 +25,8 @@ runs:
             if [ -n "$FILES_JS" ]; then
               echo "Linting files in $FOLDER"
               set +e
-              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:js:ci -- $FILES_JS && EXIT_CODE=$?
+              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:js:ci -- $FILES_JS
+              EXIT_CODE=$?
               if [ $EXIT_CODE -ne 0 ]; then let LINT_ERRORS+=1; fi
               set -e
             else
