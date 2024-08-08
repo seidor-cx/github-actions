@@ -21,7 +21,10 @@ runs:
             FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "$CFG_LINT_FILE")
             FILES_ISML=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".isml$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | grep $FOLDER | xargs)
             if [ -n "$FILES_ISML" ]; then
+              echo "Linting files in $FOLDER"
               cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:isml:ci -- $FILES_ISML
+            else
+              echo "No files to lint"
             fi
           done
         done

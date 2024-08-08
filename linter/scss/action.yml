@@ -21,7 +21,10 @@ runs:
             FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "$CFG_LINT_FILE")
             FILES_SCSS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".scss$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | grep $FOLDER | xargs)
             if [ -n "$FILES_SCSS" ]; then
+              echo "Linting files in $FOLDER"
               cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:scss:ci -- $FILES_SCSS
+            else
+              echo "No files to lint"
             fi
           done
         done
