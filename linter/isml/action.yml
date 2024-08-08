@@ -24,7 +24,7 @@ runs:
               echo "Linting files in $FOLDER"
               cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:isml:ci -- $FILES_ISML
             else
-              echo "No files to lint"
+              echo "No files to lint in $FOLDER"
             fi
           done
         done
