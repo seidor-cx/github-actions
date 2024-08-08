@@ -25,7 +25,8 @@ runs:
             if [ -n "$FILES_SCSS" ]; then
               echo "Linting files in $FOLDER"
               set +e
-              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:css:ci -- $FILES_SCSS
+              #cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:css:ci -- $FILES_SCSS
+              cd "$GITHUB_WORKSPACE/$FOLDER" && $(yq '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".scss' "$CFG_LINT_FILE") $FILES_SCSS
               EXIT_CODE=$?
               if [ $EXIT_CODE -ne 0 ]; then let LINT_ERRORS+=1; fi
               set -e

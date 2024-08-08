@@ -25,7 +25,8 @@ runs:
             if [ -n "$FILES_ISML" ]; then
               echo "Linting files in $FOLDER"
               set +e
-              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:isml:ci -- $FILES_ISML
+              #cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:isml:ci -- $FILES_ISML
+              cd "$GITHUB_WORKSPACE/$FOLDER" && $(yq '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".isml' "$CFG_LINT_FILE") $FILES_ISML
               EXIT_CODE=$?
               if [ $EXIT_CODE -ne 0 ]; then let LINT_ERRORS+=1; fi
               set -e
