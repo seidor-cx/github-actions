@@ -16,16 +16,27 @@ runs:
       shell: bash -e {0}
       run: |
         CFG_LINT_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_LINT_FILE }}"
+        LINT_ERRORS=0
+
         for VERSION in $(yq e '.node_version | keys | .[]' "$CFG_LINT_FILE"); do
           for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' "$CFG_LINT_FILE"); do
             FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "$CFG_LINT_FILE")
             FILES_ISML=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".isml$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | grep $FOLDER | xargs)
             if [ -n "$FILES_ISML" ]; then
               echo "Linting files in $FOLDER"
+              set +e
               cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:isml:ci -- $FILES_ISML
+              EXIT_CODE=$?
+              if [ $EXIT_CODE -ne 0 ]; then let LINT_ERRORS+=1; fi
+              set -e
             else
               echo "No files to lint in $FOLDER"
             fi
           done
         done
+
         cd "$GITHUB_WORKSPACE"
+        if [ $LINT_ERRORS -gt 0 ]; then
+          echo "Linting failed. Check the issues and correct them before committing."
+          exit 1
+        fi

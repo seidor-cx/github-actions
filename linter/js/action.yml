@@ -37,6 +37,6 @@ runs:
 
         cd "$GITHUB_WORKSPACE"
         if [ $LINT_ERRORS -gt 0 ]; then
-          echo "Linting failed"
+          echo "Linting failed. Check the issues and correct them before committing."
           exit 1
         fi
