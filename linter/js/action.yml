@@ -16,6 +16,8 @@ runs:
       shell: bash -e {0}
       run: |
         CFG_LINT_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_LINT_FILE }}"
+        LINT_ERRORS=0
+
         for VERSION in $(yq e '.node_version | keys | .[]' "$CFG_LINT_FILE"); do
           for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' "$CFG_LINT_FILE"); do
             FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "$CFG_LINT_FILE")
@@ -23,11 +25,17 @@ runs:
             if [ -n "$FILES_JS" ]; then
               echo "Linting files in $FOLDER"
               set +e
-              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:js:ci -- $FILES_JS
+              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:js:ci -- $FILES_JS && EXIT_CODE=$?
+              if [ $EXIT_CODE -ne 0 ]; then let LINT_ERRORS+=1; fi
               set -e
             else
               echo "No files to lint in $FOLDER"
             fi
           done
         done
+
         cd "$GITHUB_WORKSPACE"
+        if [ $LINT_ERRORS -gt 0 ]; then
+          echo "Linting failed"
+          exit 1
+        fi
