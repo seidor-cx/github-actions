@@ -5,9 +5,9 @@ inputs:
   ALL_CHANGED_FILES:
     description: 'All changed files in the PR'
     required: true
-  WORKING_DIRECTORY:
-    description: ''
-    required: true
+  CFG_LINT_FILE:
+    description: 'Path to your lint.yml file'
+    default: '.github/config/lint.yml'
 
 runs:
   using: composite
@@ -15,6 +15,14 @@ runs:
     - name: 'Lint ISML issues'
       shell: bash
       run: |
-        FILES_ISML=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".isml$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | xargs)
-        cd ${{ inputs.WORKING_DIRECTORY }}
-        npm run lint:isml:ci -- $FILES_ISML
+        CFG_LINT_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_LINT_FILE }}"
+        for VERSION in $(yq e '.node_version | keys | .[]' "$CFG_LINT_FILE"); do
+          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' "$CFG_LINT_FILE"); do
+            FOLDER=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "$CFG_LINT_FILE")
+            FILES_ISML=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".isml$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | grep $FOLDER | xargs)
+            if [ -n "$FILES_ISML" ]; then
+              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:isml:ci -- $FILES_ISML
+            fi
+          done
+        done
+        cd "$GITHUB_WORKSPACE"
