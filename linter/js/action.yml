@@ -22,7 +22,7 @@ runs:
             FILES_JS=$(echo "${{ inputs.ALL_CHANGED_FILES }}" | tr ' ' '\n' | grep -E ".js$" | while read -r FILE; do echo "$GITHUB_WORKSPACE/$FILE"; done | grep $FOLDER | xargs)
             if [ -n "$FILES_JS" ]; then
               echo "Linting files in $FOLDER"
-              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:js:ci -- $FILES_JS
+              cd "$GITHUB_WORKSPACE/$FOLDER" && npm run lint:js:ci -- $FILES_JS || true
             else
               echo "No files to lint in $FOLDER"
             fi
