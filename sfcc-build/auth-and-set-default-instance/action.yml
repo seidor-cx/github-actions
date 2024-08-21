@@ -34,7 +34,7 @@ runs:
         TOKEN=""
         
         node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth" ${{ inputs.CLIENT_ID }} ${{ inputs.CLIENT_SECRET }}
-        TOKEN=$(node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth:token")
-        echo "SFCC_TOKEN=$TOKEN" >> $GITHUB_OUTPUT
+        #TOKEN=$(node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "client:auth:token")
+        #echo "SFCC_TOKEN=$TOKEN" >> $GITHUB_OUTPUT
 
         echo "node "$TOOLS_FOLDER/node_modules/sfcc-ci/cli.js" "instance:add" ${{ inputs.INSTANCE_URL }} ${ADD_DEFAULT_INSTANCE}"
