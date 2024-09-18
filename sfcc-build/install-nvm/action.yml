@@ -2,9 +2,9 @@ name: 'install-nvm'
 description: 'Installs NVM & NODE versions'
 author: 'Seidor'
 inputs:
-  CFG_FILE:
-    description: 'Path to your config.yml file'
-    default: '.github/config/config.yml'
+  URI:
+    description: 'URI to nvm installation script'
+    default: 'https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh'
 
 runs:
   using: composite
@@ -12,4 +12,4 @@ runs:
     - name: 'install nvm & node'
       shell: bash -e {0}
       run: |
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash -e
+        curl -o- ${{ inputs.URI }} | bash -e
