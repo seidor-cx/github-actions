@@ -11,5 +11,5 @@ runs:
   using: composite
   steps:
     - name: 'Create the code-version "Artifact"'
-      run: /bin/bash $GITHUB_ACTION_PATH/unit-tests.sh config_file=${CFG_FILE}
+      run: /bin/bash $GITHUB_ACTION_PATH/unit-tests.sh config_file=${{ inputs.CFG_FILE }}
       shell: bash
