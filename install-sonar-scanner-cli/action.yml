@@ -1,0 +1,15 @@
+
+name: 'Install Sonar Scanner CLI'
+description: 'Install Sonar Scanner CLI'
+author: 'Seidor'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Install Sonar Scanner CLI'
+      shell: bash -e {0}
+      run: |
+        cd /tmp
+        wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.0.4584-linux-x64.zip
+        unzip -q sonar-scanner-cli-6.2.0.4584-linux-x64.zip
+        mv sonar-scanner-6.2.0.4584-linux-x64 /opt/sonar-scanner
