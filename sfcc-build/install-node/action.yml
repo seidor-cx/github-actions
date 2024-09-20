@@ -1,5 +1,5 @@
 name: 'install-nvm'
-description: 'Installs NVM & NODE versions'
+description: 'Installs NODE versions'
 author: 'Seidor'
 inputs:
   CFG_FILE:

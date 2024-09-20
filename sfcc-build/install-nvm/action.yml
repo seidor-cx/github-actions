@@ -1,5 +1,5 @@
 name: 'install-nvm'
-description: 'Installs NVM & NODE versions'
+description: 'Installs NVM versions'
 author: 'Seidor'
 inputs:
   URI:
