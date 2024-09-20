@@ -15,11 +15,13 @@ runs:
       run: |
         CFG_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_FILE }}"
         source $HOME/.nvm/nvm.sh
-        for CARTRIDGE in $(yq e '.unit_test_cartridges | keys | .[]' "$CFG_FILE"); do
+        for VERSION in $(yq e '.node_version | keys | .[]' "$CFG_FILE"); do
+          node -v && nvm use $VERSION && node -v
+          for CARTRIDGE in $(yq e '.node_version."'"$VERSION"'" | keys | .[]' "$CFG_FILE"); do
             echo "Executing Unit tests for cartridge: $CARTRIDGE"
-            CARTRIDGE_DIR=$(yq e '.unit_test_cartridges."'"$CARTRIDGE"'".path' "$CFG_FILE")
-            cd "$GITHUB_WORKSPACE/$CARTRIDGE_DIR"
-            npm run cover
+            CARTRIDGE_DIR=$(yq e '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".path' "$CFG_FILE")
+            cd "$GITHUB_WORKSPACE/$CARTRIDGE_DIR" && $(yq '.node_version."'"$VERSION"'"."'"$CARTRIDGE"'".cover' "$CFG_FILE")
+          done
         done
         echo "Information: Unit tests execution success"
 
