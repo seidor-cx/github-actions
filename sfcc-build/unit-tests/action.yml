@@ -1,15 +1,27 @@
-name: 'create-artifact'
-description: 'Creates the code-version "Artifact"'
+name: 'unit-tests'
+description: 'Executes unit tests'
 author: 'Seidor'
 
 inputs:
   CFG_FILE:
-    description: 'Path to your config.yml file'
-    default: '.github/config/config.yml'
+    description: 'Path to your unit_tests.yml config file'
+    default: '.github/config/unit_tests.yml'
 
 runs:
   using: composite
   steps:
-    - name: 'Create the code-version "Artifact"'
-      run: /bin/bash $GITHUB_ACTION_PATH/unit-tests.sh config_file=${{ inputs.CFG_FILE }}
-      shell: bash
+    - name: 'unit tests'
+      shell: bash -e {0}
+      run: |
+        CFG_FILE="$GITHUB_WORKSPACE/${{ inputs.CFG_FILE }}"
+        source $HOME/.nvm/nvm.sh
+        for CARTRIDGE in $(yq e '.unit_test_cartridges | keys | .[]' "$CFG_FILE"); do
+            echo "Executing Unit tests for cartridge: $CARTRIDGE"
+            CARTRIDGE_DIR=$(yq e '.unit_test_cartridges."'"$CARTRIDGE"'".path' "$CFG_FILE")
+            cd "$GITHUB_WORKSPACE/$CARTRIDGE_DIR"
+            npm run cover
+        done
+        echo "Information: Unit tests execution success"
+
+      #run: /bin/bash $GITHUB_ACTION_PATH/unit-tests.sh config_file=${{ inputs.CFG_FILE }}
+      #shell: bash
