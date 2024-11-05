@@ -103,5 +103,5 @@ jobs:
         build-args: ${{ steps.set_BUILD_ARGS.outputs.BUILD_ARGS }}
         secrets: ${{ inputs.SECRETS_ENV }}
         secret-files: ${{ inputs.SECRETS_FILE }}
-        target: ${TARGET}
+        target: ${{ inputs.TARGET }}
         pull: 'true'

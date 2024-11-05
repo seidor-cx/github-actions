@@ -106,5 +106,5 @@ jobs:
         secrets: ${{ inputs.SECRETS_ENV }}
         secret-files: ${{ inputs.SECRETS_FILE }}
         platforms: linux/amd64
-        target: ${TARGET}
+        target: ${{ inputs.TARGET }}
         pull: 'true'
