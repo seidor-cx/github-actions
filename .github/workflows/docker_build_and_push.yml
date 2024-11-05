@@ -23,13 +23,17 @@ on:
         type: string
         description: 'Dockerfile to use'
         required: false
-        default: Dockerfile
+        default: ${{ inputs.CONTEXT }}/Dockerfile
       SECRETS_ENV:
         type: string
         description: Secrets environment
       SECRETS_FILE:
         type: string
         description: Secrets file
+      TARGET:
+        type: string
+        description: "Sets the target stage to build"
+        required: false
 
 jobs:
   build_and_push_container_image:
@@ -70,6 +74,17 @@ jobs:
             done
             echo "BUILD_ARGS=$build_args"
             echo "BUILD_ARGS=$build_args" >> $GITHUB_OUTPUT
+    - name: Set Dockerfile path
+      id: set_Dockerfile_path_value
+      run: |
+            if [ ${{ inputs.DOCKERFILE }} == "Dockerfile" ]
+            then
+              echo "DOCKERFILE_PATH=${{ inputs.CONTEXT }}/Dockerfile"
+            else
+              echo "DOCKERFILE_PATH=${{ inputs.DOCKERFILE }}"
+            fi
+            echo "DOCKERFILE_PATH=$dockerfile_path"
+            echo "DOCKERFILE_PATH=$dockerfile_path" >> $GITHUB_OUTPUT
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     - name: Login to Docker Hub
@@ -83,7 +98,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: ${{ inputs.CONTEXT }}
-        file: ${{ inputs.CONTEXT }}/${{ inputs.DOCKERFILE }}
+        file: ${{ steps.set_Dockerfile_path_value.outputs.dockerfile_path }}
         push: true
         tags: |
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }} 
@@ -92,3 +107,5 @@ jobs:
         secrets: ${{ inputs.SECRETS_ENV }}
         secret-files: ${{ inputs.SECRETS_FILE }}
         platforms: linux/amd64
+        target: ${TARGET}
+        pull: 'true'
