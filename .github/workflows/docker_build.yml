@@ -77,13 +77,12 @@ jobs:
     - name: Set Dockerfile path
       id: set_Dockerfile_path_value
       run: |
-            if [ ${{ inputs.DOCKERFILE }} == "Dockerfile" ]
+            dockerfile_path=${{ inputs.DOCKERFILE }}
+            if [ "${dockerfile_path}" == "Dockerfile" ]
             then
-              echo "DOCKERFILE_PATH=${{ inputs.CONTEXT }}/Dockerfile"
-            else
-              echo "DOCKERFILE_PATH=${{ inputs.DOCKERFILE }}"
+              dockerfile_path="${{ inputs.CONTEXT }}/Dockerfile"
             fi
-            echo "DOCKERFILE_PATH=$dockerfile_path"
+            echo DOCKERFILE_PATH=$dockerfile_path
             echo "DOCKERFILE_PATH=$dockerfile_path" >> $GITHUB_OUTPUT
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
