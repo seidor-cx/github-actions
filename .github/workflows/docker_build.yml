@@ -18,12 +18,12 @@ on:
         type: string
         description: 'Context to use'
         required: false
-        default: .
+        default: "./"
       DOCKERFILE:
         type: string
         description: 'Dockerfile to use'
         required: false
-        default: Dockerfile
+        default: "Dockerfile"
       SECRETS_ENV:
         type: string
         description: Secrets environment
