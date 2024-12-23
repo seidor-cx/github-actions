@@ -69,16 +69,9 @@ jobs:
       env:
         BUILD_ARGS_RAW: ${{ inputs.BUILD_ARGS }}
       run: |
-            IFS=' ' read -ra ARGS <<< "$BUILD_ARGS_RAW"
-            build_args=""
-            for arg in "${ARGS[@]}"; do
-              build_args="$build_args$arg"$'\n'
-            done
-            echo "BUILD_ARGS=$build_args"
-            echo "BUILD_ARGS=$build_args"
-            echo "BUILD_ARGS<<EOF" >> "$GITHUB_OUTPUT"
-            echo "$build_args" >> "$GITHUB_OUTPUT"
-            echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "BUILD_ARGS<<EOF" >> "$GITHUB_OUTPUT"
+          echo "${{ inputs.BUILD_ARGS }}" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
     - name: Set Dockerfile path
       id: set_Dockerfile_path_value
       run: |
