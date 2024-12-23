@@ -70,7 +70,7 @@ jobs:
           build_args=""
           if [ -n "${{ inputs.BUILD_ARGS }}" ]; then
             for arg in ${{ inputs.BUILD_ARGS }}"; do
-              build_args="$build_args$arg"$'\n'
+              build_args="$build_args$arg\\n"
             done
           fi
           echo "build_args: ${{ inputs.BUILD_ARGS }}" 
