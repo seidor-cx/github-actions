@@ -70,7 +70,7 @@ jobs:
           build_args="$(echo ${{ inputs.BUILD_ARGS }}|awk '{print $1}')"
           for arg in $(echo ${{ inputs.BUILD_ARGS }}|awk '{for(i=2;i<=NF;i++)print $i}')
           do
-            build_args="$build_args"'\n'"$arg"
+            build_args="$build_args" "$arg"
           done
           echo "build_args: $build_args" 
           echo "BUILD_ARGS=${build_args}" >> $GITHUB_OUTPUT
@@ -100,7 +100,7 @@ jobs:
         file: ${{ steps.set_Dockerfile_path_value.outputs.dockerfile_path }}
         push: false
         tags: ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }}
-        build-args: ${{ steps.set_BUILD_ARGS_value.outputs.BUILD_ARGS }}
+        build-args: ${{ inputs.BUILD_ARGS }}
         secrets: ${{ inputs.SECRETS_ENV }}
         secret-files: ${{ inputs.SECRETS_FILE }}
         target: ${{ inputs.TARGET }}
