@@ -64,16 +64,6 @@ jobs:
             fi
             echo IMAGE=$IMAGE
             echo "IMAGE=$IMAGE" >> $GITHUB_OUTPUT
-    - name: Set BUILD_ARGS Value
-      id: set_BUILD_ARGS_value
-      run: |
-          build_args="$(echo ${{ inputs.BUILD_ARGS }}|awk '{print $1}')"
-          for arg in $(echo ${{ inputs.BUILD_ARGS }}|awk '{for(i=2;i<=NF;i++)print $i}')
-          do
-            build_args="$build_args" "$arg"
-          done
-          echo "build_args: $build_args" 
-          echo "BUILD_ARGS=${build_args}" >> $GITHUB_OUTPUT
     - name: Set Dockerfile path
       id: set_Dockerfile_path_value
       run: |
