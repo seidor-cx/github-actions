@@ -101,7 +101,7 @@ jobs:
         file: ${{ steps.set_Dockerfile_path_value.outputs.dockerfile_path }}
         push: false
         tags: ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }}
-         build-args: ${{ steps.set_BUILD_ARGS.outputs.BUILD_ARGS }}
+        build-args: ${{ steps.set_BUILD_ARGS.outputs.BUILD_ARGS }}
         secrets: ${{ inputs.SECRETS_ENV }}
         secret-files: ${{ inputs.SECRETS_FILE }}
         target: ${{ inputs.TARGET }}
