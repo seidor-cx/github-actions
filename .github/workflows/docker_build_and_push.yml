@@ -66,6 +66,8 @@ jobs:
             echo "IMAGE=$IMAGE" >> $GITHUB_OUTPUT
     - name: Set BUILD_ARGS Value
       id: set_BUILD_ARGS_value
+      env:
+        BUILD_ARGS_RAW: ${{ inputs.BUILD_ARGS }}
       run: |
             IFS=' ' read -ra ARGS <<< "$BUILD_ARGS_RAW"
             build_args=""
@@ -73,7 +75,9 @@ jobs:
               build_args="$build_args$arg"$'\n'
             done
             echo "BUILD_ARGS=$build_args"
-            echo "BUILD_ARGS=$build_args" >> $GITHUB_OUTPUT
+            echo "BUILD_ARGS<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$build_args" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
     - name: Set Dockerfile path
       id: set_Dockerfile_path_value
       run: |
