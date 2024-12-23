@@ -67,6 +67,7 @@ jobs:
     - name: Set BUILD_ARGS Value
       id: set_BUILD_ARGS_value
       run: |
+            echo ${{ inputs.BUILD_ARGS }}
             build_args=""
             if [ -n "${{ inputs.BUILD_ARGS }}" ]; then
               for arg in ${{ inputs.BUILD_ARGS }};do
