@@ -69,6 +69,7 @@ jobs:
       env:
         BUILD_ARGS_RAW: ${{ inputs.BUILD_ARGS }}
       run: |
+          echo "${{ inputs.BUILD_ARGS }}" >> "$GITHUB_OUTPUT"
           echo "BUILD_ARGS<<EOF" >> "$GITHUB_OUTPUT"
           echo "${{ inputs.BUILD_ARGS }}" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
