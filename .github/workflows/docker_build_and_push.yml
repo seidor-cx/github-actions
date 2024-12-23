@@ -70,7 +70,7 @@ jobs:
           build_args="$(echo ${{ inputs.BUILD_ARGS }}|awk '{print $1}')"
           for arg in $(echo ${{ inputs.BUILD_ARGS }}|awk '{for(i=2;i<=NF;i++)print $i}')
           do
-            build_args="$build_args\n$arg"
+            build_args="$build_args"'\n'"$arg"
           done
           echo "build_args: $build_args" 
           echo "BUILD_ARGS=${build_args}" >> $GITHUB_OUTPUT
