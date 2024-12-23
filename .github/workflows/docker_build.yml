@@ -3,6 +3,7 @@ on:
   workflow_call:
     inputs:
       BUILD_ARGS:
+        type: string
         description: 'Extra arguments to pass to kaniko'
         required: false
       IMAGE:
