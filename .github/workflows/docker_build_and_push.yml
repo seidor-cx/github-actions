@@ -67,13 +67,15 @@ jobs:
     - name: Set BUILD_ARGS Value
       id: set_BUILD_ARGS_value
       run: |
-            build_args="$(echo ${{ inputs.BUILD_ARGS }}|awk '{print $1}')"
-            for arg in $(echo ${{ inputs.BUILD_ARGS }}|awk '{for(i=2;i<=NF;i++)print $i}')
-            do
-              build_args="$build_args --build-arg $arg "
-            done
-            echo "BUILD_ARGS=$build_args"
-            echo "BUILD_ARGS=$build_args" >> $GITHUB_OUTPUT
+            build_args=""
+            if [ -n "${{ inputs.BUILD_ARGS }}" ]; then
+              while read -r line; do
+                build_args="$build_args$line"$'\n'
+              done <<< "$(echo "${{ inputs.BUILD_ARGS }}" | sed 's/ /\n/g')"
+            fi
+            echo "BUILD_ARGS<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$build_args" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
     - name: Set Dockerfile path
       id: set_Dockerfile_path_value
       run: |
@@ -102,7 +104,7 @@ jobs:
         tags: |
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:${{ steps.set_tag_value.outputs.TAG }} 
               ghcr.io/${{ github.repository }}/${{ steps.set_image_value.outputs.IMAGE }}:latest 
-        build-args: ${{ inputs.BUILD_ARGS }}
+        build-args: ${{ steps.set_BUILD_ARGS.outputs.BUILD_ARGS }}
         secrets: ${{ inputs.SECRETS_ENV }}
         secret-files: ${{ inputs.SECRETS_FILE }}
         platforms: linux/amd64
