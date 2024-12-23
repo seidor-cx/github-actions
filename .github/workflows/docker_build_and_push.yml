@@ -73,9 +73,8 @@ jobs:
                 build_args="$build_args$line"$'\n'
               done <<< "$(echo "${{ inputs.BUILD_ARGS }}" | sed 's/ /\n/g')"
             fi
-            echo "BUILD_ARGS<<EOF" >> "$GITHUB_OUTPUT"
-            echo "$build_args" >> "$GITHUB_OUTPUT"
-            echo "EOF" >> "$GITHUB_OUTPUT"
+            echo "BUILD_ARGS=$build_args"
+            echo "BUILD_ARGS=$build_args" >> $GITHUB_OUTPUT
     - name: Set Dockerfile path
       id: set_Dockerfile_path_value
       run: |
