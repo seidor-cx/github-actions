@@ -67,6 +67,12 @@ jobs:
     - name: Set BUILD_ARGS Value
       id: set_BUILD_ARGS_value
       run: |
+          build_args=""
+          if [ -n "${{ inputs.BUILD_ARGS }}" ]; then
+            for arg in ${{ inputs.BUILD_ARGS }}"; do
+              build_args="$build_args$arg"$'\n'
+            done
+          fi
           echo "build_args: ${{ inputs.BUILD_ARGS }}" 
           echo "BUILD_ARGS=${{ inputs.BUILD_ARGS }}" >> $GITHUB_OUTPUT
     - name: Set Dockerfile path
